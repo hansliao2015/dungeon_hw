@@ -11,8 +11,8 @@ private:
 public:
     Object();
     Object(string, string);
-    void setName(string);
-    void setTag(string);
     string getName() const;
     string getTag() const;
+    void setName(string);
+    void setTag(string);
 };
