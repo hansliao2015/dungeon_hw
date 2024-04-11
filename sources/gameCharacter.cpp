@@ -1,20 +1,21 @@
 #include "../headers/gameCharacter.h"
 
-GameCharacter::GameCharacter(): Object(), maxHealth(0), currentHealth(0), attack(0), defense(0) {}
-GameCharacter::GameCharacter(string name, int mH, int a, int d): Object(name, "gameCharacter"), maxHealth(mH), currentHealth(mH), attack(a), defense(d) {}
+GameCharacter::GameCharacter(): Object(), maxHealth(0), currentHp(0), atk(0), def(0) {}
+GameCharacter::GameCharacter(string name, int mH, int a, int d): Object(name, "gameCharacter"), maxHealth(mH), currentHp(mH), atk(a), def(d) {}
 
-int GameCharacter::getMaxHealth() const {return maxHealth;}
-int GameCharacter::getCurrentHealth() const {return currentHealth;}
-int GameCharacter::getAttack() const {return attack;}
-int GameCharacter::getDefense() const {return defense;}
+int GameCharacter::getMaxHp() const {return maxHealth;}
+int GameCharacter::getCurrentHp() const {return currentHp;}
+int GameCharacter::getAtk() const {return atk;}
+int GameCharacter::getDef() const {return def;}
 
-void GameCharacter::setMaxHealth(int mH) {maxHealth = mH;}
-void GameCharacter::setCurrentHealth(int cH) {currentHealth = cH;}
-void GameCharacter::setAttack(int a) {attack = a;}
-void GameCharacter::setDefense(int d) {defense = d;}
+void GameCharacter::updateState(int hp, int atk, int def) {
+    currentHp += hp;
+    atk += atk;
+    def += def;
+}
 
-bool GameCharacter::checkIsDead() const {return currentHealth <= 0;}
+bool GameCharacter::checkIsDead() const {return currentHp <= 0;}
 void GameCharacter::takeDamage(int damage) {
-    currentHealth -= damage;
-    if (currentHealth < 0) currentHealth = 0;
+    currentHp -= damage;
+    if (currentHp < 0) currentHp = 0;
 }

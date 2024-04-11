@@ -9,20 +9,17 @@ using namespace std;
 class GameCharacter: public Object {
 private:
     int maxHealth;
-    int currentHealth;
-    int attack;
-    int defense;
+    int currentHp;
+    int atk;
+    int def;
 public:
     GameCharacter();
     GameCharacter(string, int, int, int);
-    int getMaxHealth() const;
-    int getCurrentHealth() const;
-    int getAttack() const;
-    int getDefense() const;
-    void setMaxHealth(int);
-    void setCurrentHealth(int);
-    void setAttack(int);
-    void setDefense(int);
+    int getMaxHp() const;
+    int getCurrentHp() const;
+    int getAtk() const;
+    int getDef() const;
+    void updateState(int, int, int);
     bool checkIsDead() const;
     void takeDamage(int);
 };
