@@ -1,7 +1,7 @@
 #include "../headers/item.h"
 
 Item::Item(): Object(), addHealth(0), addAttack(0), addDefense(0) {}
-Item::Item(string name, int aH, int aA, int aD): Object(name, "item"), addHealth(aH), addAttack(aA), addDefense(aD) {}
+Item::Item(string name, int aH, int aA, int aD): Object(name), addHealth(aH), addAttack(aA), addDefense(aD) {}
 
 int Item::getAddHealth() const {return addHealth;}
 int Item::getAddAttack() const {return addAttack;}

@@ -1,7 +1,7 @@
 #include "../headers/gameCharacter.h"
 
 GameCharacter::GameCharacter(): Object(), maxHealth(0), currentHp(0), atk(0), def(0) {}
-GameCharacter::GameCharacter(string name, int mH, int a, int d): Object(name, "gameCharacter"), maxHealth(mH), currentHp(mH), atk(a), def(d) {}
+GameCharacter::GameCharacter(string name, int mH, int a, int d): Object(name), maxHealth(mH), currentHp(mH), atk(a), def(d) {}
 
 int GameCharacter::getMaxHp() const {return maxHealth;}
 int GameCharacter::getCurrentHp() const {return currentHp;}

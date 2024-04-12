@@ -4,17 +4,24 @@ Player::Player(): GameCharacter(), currentRoom(nullptr), previousRoom(nullptr) {
 
 Player::Player(string name, int mH, int a, int d): GameCharacter(name, mH, a, d), currentRoom(nullptr), previousRoom(nullptr) {}
 
-void Player::updateStates() {
+void Player::updateState() {
     // update player's states when adding/removing items and changing rooms
 }
 
 void Player::addItem(Item item) {
-    inventory.push_back(item);
-    updateStates();
+    backpack.push_back(item);
+    updateState();
 }
 
 void Player::changeRoom(Room *room) {
     previousRoom = currentRoom;
     currentRoom = room;
-    updateStates();
+    updateState();
+}
+
+void Player::retreat() {
+    Room *temp = currentRoom;
+    currentRoom = previousRoom;
+    previousRoom = temp;
+    updateState();
 }
