@@ -17,7 +17,7 @@ class Food;
 class Poison;
 
 class GameCharacter: public Object {
-private:
+protected:
     int maxHp;
     int currentHp;
     int atk;
@@ -37,10 +37,6 @@ public:
 
 class Player: public GameCharacter {
 private:
-    int hp;
-    int maxHp;
-    int atk;
-    int def;
     int fullness;
     int moisture;
     int vitality;

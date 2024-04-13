@@ -1,7 +1,7 @@
 #include "../headers/gameCharacters.h"
 
 
-Player::Player(string _name, int _maxHp, int _atk, int _def, int _Fullness, int _Moisture, int _Vitality, int _money): GameCharacter(_name, _maxHp, _atk, _def), hp(_maxHp), fullness(_Fullness), moisture(_Moisture), vitality(_Vitality), money(_money) {
+Player::Player(string _name, int _maxHp, int _atk, int _def, int _Fullness, int _Moisture, int _Vitality, int _money): GameCharacter(_name, _maxHp, _atk, _def), fullness(_Fullness), moisture(_Moisture), vitality(_Vitality), money(_money) {
     currentRoom = nullptr;
     previousRoom = nullptr;
     equippedItem = nullptr;
@@ -24,9 +24,9 @@ void Player::retreat() {
 
 void Player::briefState() {
     cout << "Player: " << getName() << endl;
-    cout << "HP: " << hp << "/" << maxHp << endl;
-    cout << "ATK: " << atk << endl;
-    cout << "DEF: " << def << endl;
+    cout << "HP: " << getCurrentHp() << "/" << getMaxHp() << endl;
+    cout << "ATK: " << getAtk() << endl;
+    cout << "DEF: " << getDef() << endl;
     cout << "Equipped item: " << equippedItem->getName() << endl;
 }
 
@@ -47,14 +47,14 @@ void Player::updateDamage() {
             infectedPoison = nullptr;
             return;
         }
-        hp -= infectedPoison->getDamage();
+        currentHp -= infectedPoison->getDamage();
         infectedPoison->decreaseDuration();
     }
 }
 
 void Player::eat(Food *food) {
-    hp += food->getAddHp();
-    if (hp > maxHp) hp = maxHp;
+    currentHp += food->getAddHp();
+    if (currentHp > maxHp) currentHp = maxHp;
     fullness += food->getAddFullness();
     moisture += food->getAddMoisture();
     vitality += food->getAddVitality();
