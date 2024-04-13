@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-#include "../headers/item.h"
+#include "../headers/items.h"
 #include "../headers/gameCharacter.h"
 
 int main() {

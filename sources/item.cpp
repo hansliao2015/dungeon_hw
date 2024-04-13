@@ -1,12 +1,12 @@
-#include "../headers/item.h"
+#include "../headers/items.h"
 
-Item::Item(): Object(), addHealth(0), addAttack(0), addDefense(0) {}
-Item::Item(string name, int aH, int aA, int aD): Object(name), addHealth(aH), addAttack(aA), addDefense(aD) {}
+Item::Item(string _name, int _money, int _addHp, int _addAtk, int _addDef, int _addFullness, int _addMoisture, int _addVitality): Object(_name, "item"), money(_money), addHp(_addHp), addAtk(_addAtk), addDef(_addDef), addFullness(_addFullness), addMoisture(_addMoisture), addVitality(_addVitality) {}
 
-int Item::getAddHealth() const {return addHealth;}
-int Item::getAddAttack() const {return addAttack;}
-int Item::getAddDefense() const {return addDefense;}
+int Item::getMoney() const { return money; }
+int Item::getAddHp() const { return addHp; }
+int Item::getAddAtk() const { return addAtk; }
+int Item::getAddDef() const { return addDef; }
+int Item::getAddFullness() const { return addFullness; }
+int Item::getAddMoisture() const { return addMoisture; }
+int Item::getAddVitality() const { return addVitality; }
 
-void Item::setAddHealth(int aH) {addHealth = aH;}
-void Item::setAddAttack(int aA) {addAttack = aA;}
-void Item::setAddDefense(int aD) {addDefense = aD;}

@@ -7,9 +7,9 @@ using namespace std;
 class Object {
 private:
     string name;
+    string tag;
 public:
-    Object();
-    Object(string);
+    Object(string, string);
     string getName() const;
-    void setName(string);
+    string getTag() const;
 };

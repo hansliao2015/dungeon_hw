@@ -13,7 +13,6 @@ private:
     int atk;
     int def;
 public:
-    GameCharacter();
     GameCharacter(string, int, int, int);
     int getMaxHp() const;
     int getCurrentHp() const;

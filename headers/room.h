@@ -10,7 +10,7 @@ using namespace std;
 
 class Player;
 
-class Room: public Object {
+class Room {
 private:
     int index;
     Room *upRoom;

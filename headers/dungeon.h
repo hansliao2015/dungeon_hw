@@ -9,7 +9,7 @@ using namespace std;
 
 class Dungeon {
 private:
-    Player player;
+    Player* player;
     Room *room;
 public:
     Dungeon();
@@ -18,6 +18,6 @@ public:
     void chooseAction();
     void getPlayer();
     void getRoom();
-    void setPlayer(Player player);
+    void setPlayer(Player* player);
     void setRoom(Room *room);
 };

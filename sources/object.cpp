@@ -1,8 +1,7 @@
 #include "../headers/object.h"
 
 
-Object::Object(): name("") {}
-Object::Object(string n): name(n) {}
+Object::Object(string n, string t): name(n), tag(t) {}
 
-string Object::getName() const {return name;}
-void Object::setName(string n) {name = n;}
+string Object::getName() const { return name; }
+string Object::getTag() const { return tag; }

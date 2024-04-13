@@ -2,7 +2,7 @@
 
 #include "gameCharacter.h"
 #include "room.h"
-#include "item.h"
+#include "items.h"
 
 #include <iostream>
 #include <string>
@@ -15,12 +15,11 @@ class Player: public GameCharacter {
 private:
     Room *currentRoom;
     Room *previousRoom;
-    vector<Item> backpack;
+    vector<Item*> backpack;
     void updateState();
 public:
-    Player();
     Player(string, int, int, int);
-    void addItem(Item);
+    void addItem(Item*);
     void changeRoom(Room *);
     void retreat();
     // getter
