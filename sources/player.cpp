@@ -1,10 +1,10 @@
 #include "../headers/gameCharacters.h"
 
-
-Player::Player(string _name, int _maxHp, int _atk, int _def, int _Fullness, int _Moisture, int _Vitality, int _money): GameCharacter(_name, _maxHp, _atk, _def), fullness(_Fullness), moisture(_Moisture), vitality(_Vitality), money(_money) {
+Player::Player(string _name, int _maxHp, int _atk, int _def, int _Fullness, int _Moisture, int _Vitality, int _money): GameCharacter(_name, _money, _maxHp, _atk, _def), fullness(_Fullness), moisture(_Moisture), vitality(_Vitality) {
     currentRoom = nullptr;
     previousRoom = nullptr;
     equippedItem = nullptr;
+    isRetreat = false;
 }
 
 void Player::addItem(Item *item) {
@@ -20,6 +20,7 @@ void Player::retreat() {
     Room *temp = currentRoom;
     currentRoom = previousRoom;
     previousRoom = temp;
+    isRetreat = true;
 }
 
 void Player::briefState() {
@@ -41,7 +42,7 @@ void Player::setPreviousRoom(Room *room) { previousRoom = room; }
 
 void Player::setInfectedPoison(Poison *poison) { infectedPoison = poison; }
 
-void Player::updateDamage() {
+void Player::updateTransitionState() {
     if (infectedPoison) {
         if (infectedPoison->getDuration() == 0) {
             infectedPoison = nullptr;
@@ -50,6 +51,7 @@ void Player::updateDamage() {
         currentHp -= infectedPoison->getDamage();
         infectedPoison->decreaseDuration();
     }
+    isRetreat = false;
 }
 
 void Player::eat(Food *food) {
@@ -58,4 +60,43 @@ void Player::eat(Food *food) {
     fullness += food->getAddFullness();
     moisture += food->getAddMoisture();
     vitality += food->getAddVitality();
+}
+
+void Player::launchBattle(GameCharacter *enemy) {
+    while (true) {
+        cout << ("是否選擇撤退?\n"
+                "1. 是\n"
+                "2. 否\n"
+                ">> ");
+        int choice;
+        cin >> choice;
+        if (choice == 2) {
+            retreat();
+            return;
+        }
+        enemy->takeDamage(atk);
+        cout << "你對" << enemy->getName() << "造成了" << atk - enemy->getDef() << "點傷害" << endl;
+        if (enemy->checkIsDead()) {
+            cout << "你贏了!" << endl;
+            money += enemy->getMoney();
+            cout << "你獲得了" << enemy->getMoney() << "元" << endl;
+            if (enemy->getTag() == "monster") {
+                if (dynamic_cast<Monster*>(enemy)->getDropItem()) {
+                    addItem(dynamic_cast<Monster*>(enemy)->getDropItem());
+                    cout << "你獲得了:" << dynamic_cast<Monster*>(enemy)->getDropItem()->getName() << "，已放入背包。"<< endl;
+                }
+            }
+            break;
+        }
+        takeDamage(enemy->getAtk());
+        cout << enemy->getName() << "對你造成了" << enemy->getAtk() - def << "點傷害" << endl;
+        if (currentHp <= 0) {
+            cout << "你輸了!" << endl;
+            break;
+        }
+    }
+}
+
+void Player::triggerEvent(GameCharacter* gameCharacter) {
+    launchBattle(gameCharacter);
 }
