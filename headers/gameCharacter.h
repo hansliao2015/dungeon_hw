@@ -8,7 +8,7 @@ using namespace std;
 
 class GameCharacter: public Object {
 private:
-    int maxHealth;
+    int maxHp;
     int currentHp;
     int atk;
     int def;
@@ -18,7 +18,6 @@ public:
     int getCurrentHp() const;
     int getAtk() const;
     int getDef() const;
-    void updateState(int, int, int);
-    bool checkIsDead() const;
     void takeDamage(int);
+    bool checkIsDead() const;
 };

@@ -1,10 +1,13 @@
 #pragma once
 
 #include "object.h"
+#include "player.h"
 
 #include <iostream>
 #include <string>
 using namespace std;
+
+class Player;
 
 class Item: public Object {
 private:
@@ -17,7 +20,7 @@ private:
     int addVitality;
 public:
     Item(string, int, int, int, int, int, int, int);
-    virtual void use() = 0;
+    virtual void use(Player*) = 0;
     int getMoney() const;
     int getAddHp() const;
     int getAddAtk() const;
@@ -29,18 +32,18 @@ public:
 
 class Food: public Item {
 public:
-    Food(string, int, int, int, int, int, int, int);
-    void use() override;
+    Food(string, int, int, int, int, int);
+    void use(Player*) override;
 };
 
 class Equipment: public Item {
 public:
     Equipment(string, int, int, int, int, int, int, int);
-    void use() override;
+    void use(Player*) override;
 };
 
 class Antidote: public Item {
 public:
     Antidote(string, int, int, int, int, int, int, int);
-    void use() override;
+    void use(Player*) override;
 };
