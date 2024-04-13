@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gameCharacter.h"
+#include "object.h"
 #include "room.h"
 #include "items.h"
 #include "poison.h"
@@ -10,12 +10,30 @@
 #include <vector>
 using namespace std;
 
-class GameCharacter;
 class Room;
 class Item;
 class Equipment;
 class Food;
 class Poison;
+
+class GameCharacter: public Object {
+private:
+    int maxHp;
+    int currentHp;
+    int atk;
+    int def;
+public:
+    GameCharacter(string, int, int, int);
+    int getMaxHp() const;
+    int getCurrentHp() const;
+    int getAtk() const;
+    int getDef() const;
+    void takeDamage(int);
+    bool checkIsDead() const;
+};
+
+
+/*---------player------------*/
 
 class Player: public GameCharacter {
 private:

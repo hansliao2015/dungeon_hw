@@ -1,4 +1,4 @@
-#include "../headers/player.h"
+#include "../headers/gameCharacters.h"
 
 
 Player::Player(string _name, int _maxHp, int _atk, int _def, int _Fullness, int _Moisture, int _Vitality, int _money): GameCharacter(_name, _maxHp, _atk, _def), hp(_maxHp), fullness(_Fullness), moisture(_Moisture), vitality(_Vitality), money(_money) {

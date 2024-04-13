@@ -4,7 +4,7 @@
 #include <iostream> 
 using namespace std;
 
-#include "player.h"
+#include "gameCharacters.h"
 
 class Player;
 

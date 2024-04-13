@@ -1,6 +1,6 @@
 #pragma once
 
-#include "player.h"
+#include "gameCharacters.h"
 #include "room.h"
 
 #include <iostream>

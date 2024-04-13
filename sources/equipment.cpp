@@ -1,5 +1,5 @@
 #include "../headers/items.h"
-#include "../headers/player.h"
+#include "../headers/gameCharacters.h"
 
 class Player;
 

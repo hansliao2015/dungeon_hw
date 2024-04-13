@@ -2,7 +2,7 @@
 using namespace std;
 
 #include "../headers/items.h"
-#include "../headers/gameCharacter.h"
+#include "../headers/gameCharacters.h"
 
 int main() {
     return 0;

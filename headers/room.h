@@ -1,8 +1,7 @@
 #pragma once
 
 #include "object.h"
-#include "player.h"
-
+#include "gameCharacters.h"
 #include <iostream>
 #include <string>
 #include <vector>

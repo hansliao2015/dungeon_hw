@@ -1,4 +1,4 @@
-#include "../headers/gameCharacter.h"
+#include "../headers/gameCharacters.h"
 
 
 GameCharacter::GameCharacter(string name, int mH, int a, int d): Object(name, "gameCharacter"), maxHp(mH), currentHp(mH), atk(a), def(d) {}
