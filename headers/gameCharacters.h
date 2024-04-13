@@ -14,6 +14,7 @@ class Room;
 class Item;
 class Equipment;
 class Food;
+class Antidote;
 class Poison;
 class Player;
 
@@ -58,12 +59,13 @@ public:
     void changeRoom(Room *);
     void retreat();
     void equip(Equipment*);
+    void eat(Food*);
+    void useAntidote(Antidote*);
     void briefState();
     void setCurrentRoom(Room*);
     void setPreviousRoom(Room*);
     void setInfectedPoison(Poison*);
     void updateTransitionState();
-    void eat(Food*);
     void launchBattle(GameCharacter* enemy);
     void triggerEvent(GameCharacter* gameCharacter) override;
     void updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int vitalityDamage);

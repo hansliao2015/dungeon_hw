@@ -36,6 +36,19 @@ void Player::equip(Equipment *equipment) {
     briefState();
 }
 
+void Player::eat(Food *food) {
+    currentHp += food->getAddHp();
+    if (currentHp > maxHp) currentHp = maxHp;
+    fullness += food->getAddFullness();
+    moisture += food->getAddMoisture();
+    vitality += food->getAddVitality();
+}
+
+void Player::useAntidote(Antidote *antidote) {
+    cout << "你使用了" << antidote->getName() << "，解除了中毒狀態" << endl;
+    infectedPoison = nullptr;
+}
+
 void Player::setCurrentRoom(Room *room) { currentRoom = room; }
 
 void Player::setPreviousRoom(Room *room) { previousRoom = room; }
@@ -54,13 +67,6 @@ void Player::updateTransitionState() {
     isRetreat = false;
 }
 
-void Player::eat(Food *food) {
-    currentHp += food->getAddHp();
-    if (currentHp > maxHp) currentHp = maxHp;
-    fullness += food->getAddFullness();
-    moisture += food->getAddMoisture();
-    vitality += food->getAddVitality();
-}
 
 void Player::launchBattle(GameCharacter *enemy) {
     while (true) {

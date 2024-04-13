@@ -44,6 +44,6 @@ public:
 
 class Antidote: public Item {
 public:
-    Antidote(string, int, int, int, int, int, int, int);
+    Antidote(string, int);
     void use(Player*) override;
 };
