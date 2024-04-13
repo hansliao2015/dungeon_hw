@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gameCharacters.h"
-#include "room.h"
+#include "rooms.h"
 
 #include <iostream>
 #include <string>

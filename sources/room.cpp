@@ -1,4 +1,4 @@
-#include "../headers/room.h"
+#include "../headers/rooms.h"
 
 Room::Room(int _index): index(_index), upRoom(nullptr), downRoom(nullptr), leftRoom(nullptr), rightRoom(nullptr), isExit(false), objects() {}
 
