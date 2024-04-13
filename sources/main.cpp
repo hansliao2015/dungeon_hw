@@ -5,11 +5,12 @@ using namespace std;
 #include "../headers/gameCharacters.h"
 #include "../headers/rooms.h"
 #include "../headers/dungeon.h"
+#include "../headers/utils.h"
 
 int main() {
     Dungeon dungeon;
     dungeon.init();
-    cout << "歡迎來到地下城" << endl;
+    typewriter("歡迎來到地下城\n");
     while (!dungeon.isGameOver()) {
         dungeon.transition();
         dungeon.isPlayerChangeRoom = false;

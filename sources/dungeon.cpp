@@ -1,4 +1,5 @@
 #include "../headers/dungeon.h"
+#include "../headers/utils.h"
 
 Dungeon::Dungeon() {}
 
@@ -15,7 +16,7 @@ bool Dungeon::isPlayerLose() {
 }
 
 void Dungeon::transition() {
-    cout << "移動至下個房間..." << endl;
+    typewriter("移動至下個房間...\n");
     player->updateTransitionState();
     player->briefState();
 }

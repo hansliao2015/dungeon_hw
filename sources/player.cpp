@@ -1,4 +1,5 @@
 #include "../headers/gameCharacters.h"
+#include "../headers/utils.h"
 
 Player::Player(string _name, int _maxHp, int _atk, int _def, int _Fullness, int _Moisture, int _Vitality, int _money): GameCharacter(_name, _money, _maxHp, _atk, _def), fullness(_Fullness), moisture(_Moisture), vitality(_Vitality) {
     currentRoom = nullptr;
@@ -27,29 +28,42 @@ void Player::retreat() {
 }
 
 void Player::briefState() {
-    cout << "玩家: " << getName() << endl;
-    cout << "血量: " << getCurrentHp() << "/" << getMaxHp() << endl;
-    cout << "攻擊: " << getAtk() << endl;
-    cout << "防禦: " << getDef() << endl;
-    if (equippedItem) cout << "裝備: " << equippedItem->getName() << endl;
-    else cout << "裝備: 無" << endl;
+    string n = (
+        "玩家: " + getName() + "\n"
+        "血量: " + to_string(getCurrentHp()) + "/" + to_string(getMaxHp()) + "\n"
+        "攻擊: " + to_string(getAtk()) + "\n"
+        "防禦: " + to_string(getDef()) + "\n"
+    );
+    if (equippedItem) n += "裝備: " + equippedItem->getName() + "\n";
+    else n += "裝備: 無\n";
+    typewriter(n);
 }
 
 void Player::detailedState() {
-    cout << "玩家: " << getName() << endl;
-    cout << "血量: " << getCurrentHp() << "/" << getMaxHp() << endl;
-    cout << "攻擊: " << getAtk() << endl;
-    cout << "防禦: " << getDef() << endl;
-    cout << "飽足: " << fullness << endl;
-    cout << "滋潤: " << moisture << endl;
-    cout << "精神: " << vitality << endl;
-    if (infectedPoison) cout << "負面狀態--中毒: " << infectedPoison->getName() << endl;
-    else cout << "負面狀態: 無" << endl;
-    if (equippedItem) cout << "裝備: " << equippedItem->getName() << endl;
-    else cout << "裝備: 無" << endl;
-    cout << "背包內物品: " << endl;
+
+    string n = (
+        "玩家: " + getName() + "\n"
+        "血量: " + to_string(getCurrentHp()) + "/" + to_string(getMaxHp()) + "\n"
+        "攻擊: " + to_string(getAtk()) + "\n"
+        "防禦: " + to_string(getDef()) + "\n"
+        "飽足: " + to_string(fullness) + "\n"
+        "滋潤: " + to_string(moisture) + "\n"
+        "精神: " + to_string(vitality) + "\n"
+    );
+    if (infectedPoison) n += "負面狀態--中毒: " + infectedPoison->getName() + "\n";
+    else {
+        n += "負面狀態: 無";
+        n += "\n";
+    }
+    if (equippedItem) {
+        n += "裝備: " + equippedItem->getName() + "\n";
+    } else {
+        n += "裝備: 無";
+        n += "\n";
+    }
+    n += "背包內物品: " ;
     for (int i = 0; i < backpack.size(); i++) {
-        cout << i + 1 << ". " << backpack[i]->getName() << endl;
+        n += backpack[i]->getName() + " ";
     }
 }
 
