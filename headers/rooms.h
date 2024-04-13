@@ -21,6 +21,7 @@ private:
 public:
     Room(int);
 
+    string tag;
     // 7 getter
     Room *getUpRoom() const;
     Room *getDownRoom() const;

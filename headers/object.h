@@ -10,6 +10,7 @@ private:
     string tag;
 public:
     Object(string, string);
+    virtual ~Object();
     string getName() const;
     string getTag() const;
 };

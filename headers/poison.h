@@ -16,6 +16,7 @@ private:
     int duration;
 public:
     Poison(string _name, int _damage, int _maxDuration);
+    string getName();
     int getDamage();
     int getDuration();
     void decreaseDuration();

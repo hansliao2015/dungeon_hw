@@ -1,6 +1,6 @@
 #include "../headers/rooms.h"
 
-Room::Room(int _index): index(_index), upRoom(nullptr), downRoom(nullptr), leftRoom(nullptr), rightRoom(nullptr), isExit(false), objects() {}
+Room::Room(int _index): index(_index), tag("Room"), upRoom(nullptr), downRoom(nullptr), leftRoom(nullptr), rightRoom(nullptr), isExit(false), objects() {}
 
 // getter: 7 functions
 Room *Room::getUpRoom() const { return this->upRoom; }
@@ -28,6 +28,7 @@ void Room::addObject(Object *object) {
 
 
 void Room::roomAction(Player *player) {
+    cout << "這裡是房間" << this->getIndex() << endl;
     cout << "你來到了一個普通的房間，在這裡你不會遇到任何東西，可以安心地調整狀態，休息過後再出發。";
 }
 
@@ -52,14 +53,14 @@ void Room::encounterObjects(Player *player) {
         char option;
         cin >> option;
         if (option == 'y') {
-            if (static_cast<Item*>(this->objects[i])) {
-                player->addItem(static_cast<Item*>(this->objects[i]));
+            if (dynamic_cast<Item*>(this->objects[i])) {
+                player->addItem(dynamic_cast<Item*>(this->objects[i]));
                 cout << "你獲得了" << this->objects[i]->getName() << "，已放入背包。" << endl;
                 this->objects.erase(this->objects.begin() + i);
                 --i;
             } 
-            else if (static_cast<GameCharacter*>(this->objects[i])) {
-                static_cast<GameCharacter*>(this->objects[i])->triggerEvent(player);
+            else if (dynamic_cast<GameCharacter*>(this->objects[i])) {
+                dynamic_cast<GameCharacter*>(this->objects[i])->triggerEvent(player);
                 if (static_cast<GameCharacter*>(this->objects[i])->checkIsDead()) {
                     this->objects.erase(this->objects.begin() + i);
                     --i;

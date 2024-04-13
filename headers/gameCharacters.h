@@ -55,6 +55,8 @@ private:
     bool isRetreat;
 public:
     Player(string _name, int _maxHp, int _atk, int _def, int _Fullness, int _Moisture, int _Vitality, int _money);
+    Room* getCurrentRoom() const;
+    Room* getPreviousRoom() const;
     void addItem(Item*);
     void changeRoom(Room *);
     void retreat();
@@ -62,6 +64,7 @@ public:
     void eat(Food*);
     void useAntidote(Antidote*);
     void briefState();
+    void detailedState();
     void setCurrentRoom(Room*);
     void setPreviousRoom(Room*);
     void setInfectedPoison(Poison*);
@@ -69,10 +72,9 @@ public:
     void launchBattle(GameCharacter* enemy);
     void triggerEvent(GameCharacter* gameCharacter) override;
     void updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int vitalityDamage);
-
-    // getter
-
-    // setter
+    void listItems();
+    void chooseItem();
+    void openBackpack();
 };
 
 /*---------monster------------*/
