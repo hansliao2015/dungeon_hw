@@ -100,3 +100,12 @@ void Player::launchBattle(GameCharacter *enemy) {
 void Player::triggerEvent(GameCharacter* gameCharacter) {
     launchBattle(gameCharacter);
 }
+
+void Player::updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int vitalityDamage) {
+    fullness -= fullnessDamage;
+    moisture -= moistureDamage;
+    vitality -= vitalityDamage;
+    if (fullness < 0) fullness = 0;
+    if (moisture < 0) moisture = 0;
+    if (vitality < 0) vitality = 0;
+}

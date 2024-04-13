@@ -66,6 +66,7 @@ public:
     void eat(Food*);
     void launchBattle(GameCharacter* enemy);
     void triggerEvent(GameCharacter* gameCharacter) override;
+    void updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int vitalityDamage);
 
     // getter
 

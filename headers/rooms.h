@@ -41,5 +41,18 @@ public:
     // other functions
     void addObject(Object *);
     virtual void roomAction(Player *player);
+    bool canPass();
+    void encounterObjects(Player *player);
+};
 
+class Desert: public Room {
+public:
+    Desert(int);
+    void roomAction(Player *player) override;
+};
+
+class Forest: public Room {
+public:
+    Forest(int);
+    void roomAction(Player *player) override;
 };
