@@ -1,6 +1,7 @@
 #include "../headers/rooms.h"
+#include "../headers/utils.h"
 
-Room::Room(int _index): index(_index), tag("Room"), upRoom(nullptr), downRoom(nullptr), leftRoom(nullptr), rightRoom(nullptr), isExit(false), objects() {}
+Room::Room(int _index): index(_index), tag("普通房間"), upRoom(nullptr), downRoom(nullptr), leftRoom(nullptr), rightRoom(nullptr), isExit(false), objects() {}
 
 // getter: 7 functions
 Room *Room::getUpRoom() const { return this->upRoom; }
@@ -28,8 +29,9 @@ void Room::addObject(Object *object) {
 
 
 void Room::roomAction(Player *player) {
-    cout << "這裡是房間" << this->getIndex() << endl;
-    cout << "你來到了一個普通的房間，在這裡你不會遇到任何東西，可以安心地調整狀態，休息過後再出發。";
+    typewriter("這裡是房間" + to_string(this->getIndex()) + "\n");
+    
+    cout << "你來到了" << tag <<"，在這裡你不會遇到任何東西，可以安心地調整狀態，休息過後再出發。";
 }
 
 bool Room::canPass() {

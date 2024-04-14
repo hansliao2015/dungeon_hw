@@ -34,4 +34,6 @@ public:
     void transition();
     void handleMovement();
     void showOption();
+    void printResult();
+    void runGame();
 };

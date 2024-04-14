@@ -31,7 +31,8 @@ void Dungeon::init() {
     initPlayer();
     player->setCurrentRoom(room);
     player->setPreviousRoom(room);
-    cout << "遊戲初始化完成!" << endl;
+    typewriter("遊戲初始化完成!\n");
+    typewriter("歡迎來到地下城!\n");
 }
 
 void Dungeon::initPlayer() {
@@ -98,6 +99,10 @@ void Dungeon::initRooms() {
     forest->addObject(monsters[3]);
     rooms.push_back(forest);
     rooms[10]->setIsExit(true);
+    rooms[1]->addObject(npcs[0]);
+    rooms[2]->addObject(npcs[1]);
+    rooms[4]->addObject(npcs[2]);
+    rooms[5]->addObject(npcs[3]);
     /*
     Map:
           7-9-10
@@ -195,3 +200,27 @@ void Dungeon::showOption() {
         showOption();
     }
 }
+
+void Dungeon::printResult() {
+    typewriter("遊戲結束!\n");
+    if (isPlayerWin()) {
+        typewriter("恭喜你通過了地下城!\n");
+    } else if (isPlayerLose()){
+        typewriter("你輸了!\n");
+    }
+}
+
+void Dungeon::runGame() {
+    while (!isGameOver()) {
+        transition();
+        isPlayerChangeRoom = false;
+        if (isGameOver()) break;
+        showOption();
+        if (isPlayerChangeRoom) continue;
+        player->getCurrentRoom()->roomAction(player);
+        if (isPlayerChangeRoom) continue;
+        if (player->getCurrentRoom()->tag != "普通房間") showOption();
+    }
+}
+
+
