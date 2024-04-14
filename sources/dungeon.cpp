@@ -18,6 +18,7 @@ bool Dungeon::isPlayerLose() {
 
 
 void Dungeon::init() {
+    clear();
     cout << ("遊戲初始化中...\n");
     initFoods();
     initNpcs();
@@ -27,7 +28,6 @@ void Dungeon::init() {
     player->setCurrentRoom(room);
     player->setPreviousRoom(room);
     cout << ("遊戲初始化完成!\n");
-    cout << ("歡迎來到地下城!\n");
 }
 
 void Dungeon::initPlayer() {
@@ -133,25 +133,22 @@ void Dungeon::initRooms() {
 
 void Dungeon::handleMovement() {
     if (!player->getCurrentRoom()->canPass()) {
-        typewriter("這個房間裡有怪物，你只能選擇撤退，或是打倒怪物後繼續前進!\n");
-        return;
+        typewriter("這個房間裡有怪物，你只能選擇回到原本房間，或是打倒怪物後繼續前進!\n");
     }
     typewriter("你可以選擇...\n");
-    bool option1 = player->getCurrentRoom()->getUpRoom() && (player->getCurrentRoom()->getUpRoom() != player->getPreviousRoom());
-    bool option2 = player->getCurrentRoom()->getDownRoom() && (player->getCurrentRoom()->getDownRoom() != player->getPreviousRoom());
-    bool option3 = player->getCurrentRoom()->getLeftRoom() && (player->getCurrentRoom()->getLeftRoom() != player->getPreviousRoom());
-    bool option4 = player->getCurrentRoom()->getRightRoom() && (player->getCurrentRoom()->getRightRoom() != player->getPreviousRoom());
+    bool option1 = player->getCurrentRoom()->getUpRoom();
+    bool option2 = player->getCurrentRoom()->getDownRoom();
+    bool option3 = player->getCurrentRoom()->getLeftRoom();
+    bool option4 = player->getCurrentRoom()->getRightRoom();
 
     if (option1) 
         typewriter("往上走(1)\n");
-        cout << "往上走(1)" << endl;
     if (option2)
         typewriter("往下走(2)\n");
     if (option3)
         typewriter("往左走(3)\n");
     if (option4)
         typewriter("往右走(4)\n");
-    typewriter("撤退(5)\n>> ");
 
     char direction = input();
     if (direction == '1' && option1) {
@@ -162,8 +159,6 @@ void Dungeon::handleMovement() {
         player->changeRoom(player->getCurrentRoom()->getLeftRoom());
     } else if (direction == '4' && option4) {
         player->changeRoom(player->getCurrentRoom()->getRightRoom());
-    } else if (direction == '5') {
-        player->retreat();
     } else {
         typewriter("請選擇正確的方向!\n");
         handleMovement();
@@ -223,9 +218,7 @@ void Dungeon::runGame() {
 void Dungeon::drawGameConsole() {
     clear();
     cout << "---------------------------------------------------------------------\n";
-    cout << " " << player->getCurrentRoom()->getIndex() << "號房間 ，" << player->getCurrentRoom()->tag << endl;
-
-    cout << "---------------------------------------------------------------------\n";
+    cout << "           " << player->getCurrentRoom()->getIndex() << "號房間:" << player->getCurrentRoom()->tag << endl;
     if (player->getCurrentRoom()->getUpRoom()) {
         cout << "                   ↑                  " << endl;
         cout << "                                      " << endl;

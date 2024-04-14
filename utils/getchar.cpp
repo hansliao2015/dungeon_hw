@@ -3,8 +3,7 @@
 #include <unistd.h>
 #include <termios.h>
 
-char input()
-{
+char input() {
     char buf = 0;
     struct termios old = {0};
     fflush(stdout);
@@ -24,4 +23,4 @@ char input()
         perror("tcsetattr ~ICANON");
     printf("%c\n", buf);
     return buf;
- }
+}

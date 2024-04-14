@@ -17,6 +17,6 @@ void typewriter(string text) {
     for (int i = 0; i < text.length(); i++) {
         cout << text[i];
         fflush(stdout);
-        usleep(TIME * 500);
+        usleep(TIME * 200);
     }
 }
