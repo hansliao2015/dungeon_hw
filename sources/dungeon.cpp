@@ -157,26 +157,26 @@ showOption()
 */
 void Dungeon::handleMovement() {
     if (!player->getCurrentRoom()->canPass()) {
-        cout << "這個房間裡有怪物，你只能選擇撤退，或是打倒怪物後繼續前進!" << endl;
+        typewriter("這個房間裡有怪物，你只能選擇撤退，或是打倒怪物後繼續前進!\n");
         return;
     }
-    cout << "請選擇方向" << endl;
+    typewriter("你可以選擇...\n");
     bool option1 = player->getCurrentRoom()->getUpRoom() && (player->getCurrentRoom()->getUpRoom() != player->getPreviousRoom());
     bool option2 = player->getCurrentRoom()->getDownRoom() && (player->getCurrentRoom()->getDownRoom() != player->getPreviousRoom());
     bool option3 = player->getCurrentRoom()->getLeftRoom() && (player->getCurrentRoom()->getLeftRoom() != player->getPreviousRoom());
     bool option4 = player->getCurrentRoom()->getRightRoom() && (player->getCurrentRoom()->getRightRoom() != player->getPreviousRoom());
 
     if (option1) 
+        typewriter("往上走(1)\n");
         cout << "往上走(1)" << endl;
     if (option2)
-      cout << "往下走(2)" << endl;
+        typewriter("往下走(2)\n");
     if (option3)
-       cout << "往左走(3)" << endl;
+        typewriter("往左走(3)\n");
     if (option4)
-      cout << "往右走(4)" << endl;
-    cout << "撤退(5)" << endl;
+        typewriter("往右走(4)\n");
+    typewriter("撤退(5)\n>> ");
 
-    cout << ">> ";
     int direction;
     cin >> direction;
     if (direction == 1 && option1) {
@@ -190,7 +190,7 @@ void Dungeon::handleMovement() {
     } else if (direction == 5) {
         player->retreat();
     } else {
-        cout << "請選擇正確的方向!" << endl;
+        typewriter("請選擇正確的方向!\n");
         handleMovement();
     }
 
@@ -198,24 +198,26 @@ void Dungeon::handleMovement() {
 
 }
 void Dungeon::showOption() {
-    cout << "你可以選擇..." << endl;
-    cout << "1. 移動" << endl;
-    cout << "2. 查看狀態" << endl;
-    cout << "3. 打開背包" << endl;
+    typewriter(
+        "你可以選擇...\n"
+        "1. 移動\n"
+        "2. 查看狀態\n"
+        "3. 打開背包\n"
+    );
     int option;
     cin >> option;
     if (option == 1) {
         handleMovement();
     } else if (option == 2) {
         player->detailedState();
-        cout << "按下任意鍵以繼續..." << endl;
+        typewriter("按下任意鍵以繼續...\n");
         cin.get();
         cin.get();
         showOption();
     } else if (option == 3) {
         player->openBackpack();
         showOption();
-        cout << "按下任意鍵以繼續..." << endl;
+        typewriter("按下任意鍵以繼續...\n");
         cin.get();
         cin.get();
     }

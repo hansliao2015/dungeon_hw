@@ -109,40 +109,34 @@ void Player::updateTransitionState() {
 
 void Player::launchBattle(GameCharacter *enemy) {
     while (true) {
-        cout << ("是否選擇撤退?\n"
-                "1. 是\n"
-                "2. 否\n"
-                ">> ");
-        int choice;
+        typewriter("輸入q以離開戰鬥\n");
+        char choice;
         cin >> choice;
-        if (choice == 1) {
+        if (choice == 'q') {
             retreat();
-            return;
-        } else if (choice == 2) {
-        } else {
-            cout << "無效的選擇" << endl;
-            continue;
+            break;
         }
         enemy->takeDamage(atk);
-        cout << "你對" << enemy->getName() << "造成了" << atk - enemy->getDef() << "點傷害" << endl;
-        cout << enemy->getName() << "剩餘HP: " << enemy->getCurrentHp() << "/" << enemy->getMaxHp() << endl;
+        typewriter("你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n");
+        typewriter(enemy->getName() + "剩餘HP: " + to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n");
+
         if (enemy->checkIsDead()) {
-            cout << "你贏了!" << endl;
+            typewriter("你贏了!\n");
             money += enemy->getMoney();
-            cout << "你獲得了" << enemy->getMoney() << "元" << endl;
+            typewriter("你獲得了" + to_string(enemy->getMoney()) + "元\n");
             if (enemy->getTag() == "monster") {
                 if (dynamic_cast<Monster*>(enemy)->getDropItem()) {
                     addItem(dynamic_cast<Monster*>(enemy)->getDropItem());
-                    cout << "你獲得了:" << dynamic_cast<Monster*>(enemy)->getDropItem()->getName() << "，已放入背包。"<< endl;
+                    typewriter("你獲得了" + dynamic_cast<Monster*>(enemy)->getDropItem()->getName() + "，已放入背包。\n");
                 }
             }
             break;
         }
         takeDamage(enemy->getAtk());
-        cout << "你剩餘HP: " << currentHp << "/" << maxHp << endl;
-        cout << enemy->getName() << "對你造成了" << enemy->getAtk() - def << "點傷害" << endl;
+        typewriter("你剩餘HP: " + to_string(currentHp) + "/" + to_string(maxHp) + "\n");
+        typewriter(enemy->getName() + "對你造成了" + to_string(enemy->getAtk() - def) + "點傷害\n");
         if (currentHp <= 0) {
-            cout << "你輸了!" << endl;
+            typewriter("你死了!\n");
             break;
         }
     }
@@ -161,27 +155,23 @@ void Player::updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int
     if (vitality < 0) vitality = 0;
 }
 
-void Player::listItems() {
-    cout << "背包內物品: " << endl;
-    for (int i = 0; i < backpack.size(); i++) {
-        cout << i + 1 << ". " << backpack[i]->getName() << endl;
+void Player::openBackpack() {
+    if (backpack.size() == 0) {
+        typewriter("背包內沒有物品\n");
+        return;
     }
-}
-
-void Player::chooseItem() {
-    cout << "選擇要使用的物品: ";
+    typewriter("背包內物品: \n");
+    for (int i = 0; i < backpack.size(); i++) {
+        typewriter(to_string(i + 1) + ". " + backpack[i]->getName() + "\n");
+    }
+    typewriter("選擇要使用的物品: ");
     int choice;
     cin >> choice;
     if (choice < 1 || choice > backpack.size()) {
-        cout << "無效的選擇" << endl;
+        typewriter("無效的選擇\n");
         return;
     }
     backpack[choice - 1]->use(this);
     backpack.erase(backpack.begin() + choice - 1);
-}
-
-void Player::openBackpack() {
-    listItems();
-    chooseItem();
     briefState();
 }
