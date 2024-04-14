@@ -5,3 +5,4 @@ using namespace std;
 
 void typewriter(string text);
 void clear();
+void wait();

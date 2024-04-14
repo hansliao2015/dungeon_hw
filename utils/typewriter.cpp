@@ -19,5 +19,4 @@ void typewriter(string text) {
         fflush(stdout);
         usleep(TIME * 1000);
     }
-    cout << endl;
 }

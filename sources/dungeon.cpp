@@ -23,7 +23,7 @@ void Dungeon::transition() {
 
 
 void Dungeon::init() {
-    cout << "遊戲初始化中..." << endl;
+    typewriter("遊戲初始化中...\n");
     initFoods();
     initNpcs();
     initMonsters();
@@ -35,21 +35,21 @@ void Dungeon::init() {
 }
 
 void Dungeon::initPlayer() {
-    cout << "請問你的名字是?" << endl;
+    typewriter("請問你的名字是?\n");
     string name;
     cin >> name;
     player = new Player(name, 200, 20, 5, 100, 100, 100, 10);
 }
 
 void Dungeon::initFoods() {
-    cout << "正在初始化食物..." << endl;
+    typewriter("正在初始化食物...\n");
     foods.push_back(new Food("麵包", 5, 10, 10, 0, 5));
     foods.push_back(new Food("蘋果", 3, 5, 5, 8, 3));
     foods.push_back(new Food("肉湯", 10, 15, 15, 15, 15));
 }
 
 void Dungeon::initNpcs() {
-    cout << "正在初始化NPC..." << endl;
+    typewriter("正在初始化NPC...\n");
     vector<string> npcLines;
     vector<string> npcNames;
     npcLines.push_back("小心毒蛇的攻擊。他們會在你身上留下猛毒!");
@@ -66,7 +66,7 @@ void Dungeon::initNpcs() {
 }
 
 void Dungeon::initMonsters() {
-    cout << "正在初始化怪物..." << endl;
+    typewriter("正在初始化怪物...\n");
     monsters.push_back(new Monster("蛇", 30, 30, 5, 5));
     monsters.push_back(new Monster("蠍子", 25, 30, 10, 5));
     monsters.push_back(new Monster("狼", 100, 50, 15, 10));
@@ -75,7 +75,7 @@ void Dungeon::initMonsters() {
 
 
 void Dungeon::initRooms() {
-    cout << "正在初始化房間..." << endl;
+    typewriter("正在初始化房間...\n");
     vector<Room*> rooms;
     for (int i = 0; i <= 9; i++) {
         if (i%3 == 0) {
@@ -131,30 +131,6 @@ void Dungeon::initRooms() {
     rooms[10]->setLeftRoom(rooms[9]);
 }
 
-/*
-
-cin >> option;
-if (option == move) {
-	print "方向"
-	if (撤退且前一個房間不等於後一個房間) 
-		Player→retreat()
-		dungeon.**playerMovedToAnotherRoom** = true
-	if (通過)
-		if room.canPass()
-		Player→changeRoom(Room`*`)
-		dungeon.**playerMovedToAnotherRoom** = true
-} else if (option == checkStatus) {
-detailedStatus
-按下任意鍵以繼續，重新渲染
-showOption()
-} else if (option == openBackPack) {
-listItem()
-chooseItem()
-printStatus
-按下任意鍵以繼續，重新渲染
-showOption()
-}
-*/
 void Dungeon::handleMovement() {
     if (!player->getCurrentRoom()->canPass()) {
         typewriter("這個房間裡有怪物，你只能選擇撤退，或是打倒怪物後繼續前進!\n");
@@ -203,6 +179,7 @@ void Dungeon::showOption() {
         "1. 移動\n"
         "2. 查看狀態\n"
         "3. 打開背包\n"
+        "4. 繼續前行\n>> "
     );
     int option;
     cin >> option;
@@ -210,15 +187,11 @@ void Dungeon::showOption() {
         handleMovement();
     } else if (option == 2) {
         player->detailedState();
-        typewriter("按下任意鍵以繼續...\n");
-        cin.get();
-        cin.get();
+        wait();
         showOption();
     } else if (option == 3) {
         player->openBackpack();
+        wait();
         showOption();
-        typewriter("按下任意鍵以繼續...\n");
-        cin.get();
-        cin.get();
     }
 }
