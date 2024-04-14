@@ -55,6 +55,9 @@ private:
     bool isRetreat;
 public:
     Player(string _name, int _maxHp, int _atk, int _def, int _Fullness, int _Moisture, int _Vitality, int _money);
+    int getFullness() const;
+    int getMoisture() const;
+    int getVitality() const;
     Room* getCurrentRoom() const;
     Room* getPreviousRoom() const;
     void addItem(Item*);

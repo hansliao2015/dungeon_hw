@@ -8,6 +8,10 @@ Player::Player(string _name, int _maxHp, int _atk, int _def, int _Fullness, int 
     isRetreat = false;
 }
 
+int Player::getFullness() const { return fullness; }
+int Player::getMoisture() const { return moisture; }
+int Player::getVitality() const { return vitality; }
+
 Room* Player::getCurrentRoom() const { return currentRoom; }
 Room* Player::getPreviousRoom() const { return previousRoom; }
 
@@ -110,11 +114,16 @@ void Player::updateTransitionState() {
 void Player::launchBattle(GameCharacter *enemy) {
     while (true) {
         typewriter("輸入q以離開戰鬥\n");
-        char choice;
-        cin >> choice;
+        typewriter("輸入a以攻擊\n");
+        char choice = input();
         if (choice == 'q') {
             retreat();
             break;
+        } else if (choice == 'a') {
+            typewriter("你對" + enemy->getName() + "發動了攻擊\n");
+        } else {
+            typewriter("無效的選擇\n");
+            continue;
         }
         enemy->takeDamage(atk);
         typewriter("你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n");
@@ -157,14 +166,14 @@ void Player::updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int
 
 void Player::openBackpack() {
     if (backpack.size() == 0) {
-        typewriter("背包內沒有物品\n");
+        cout << ("背包內沒有物品\n");
         return;
     }
-    typewriter("背包內物品: \n");
+    cout << ("背包內物品: \n");
     for (int i = 0; i < backpack.size(); i++) {
         typewriter(to_string(i + 1) + ". " + backpack[i]->getName() + "\n");
     }
-    typewriter("選擇要使用的物品: ");
+    cout << ("選擇要使用的物品: ");
     int choice;
     cin >> choice;
     if (choice < 1 || choice > backpack.size()) {

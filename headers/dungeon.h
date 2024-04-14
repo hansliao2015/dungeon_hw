@@ -31,9 +31,9 @@ public:
     void initNpcs();
     void initMonsters();
     void initRooms();
-    void transition();
     void handleMovement();
     void showOption();
     void printResult();
     void runGame();
+    void drawGameConsole();
 };

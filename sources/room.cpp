@@ -30,8 +30,7 @@ void Room::addObject(Object *object) {
 
 void Room::roomAction(Player *player) {
     typewriter("這裡是房間" + to_string(this->getIndex()) + "\n");
-    
-    cout << "你來到了" << tag <<"，在這裡你不會遇到任何東西，可以安心地調整狀態，休息過後再出發。";
+    typewriter("在這裡你不會遇到任何東西，可以安心地調整狀態，休息過後再出發。\n");
 }
 
 bool Room::canPass() {
@@ -52,8 +51,7 @@ void Room::encounterObjects(Player *player) {
         cout << "玩家移動中…" << endl;
         cout << "你發現了" << this->objects[i]->getName() << "，是否選擇繼續向前?" << endl;
         cout << "請選擇你的選項(y/n):" << endl;
-        char option;
-        cin >> option;
+        char option = input();
         if (option == 'y') {
             if (dynamic_cast<Item*>(this->objects[i])) {
                 player->addItem(dynamic_cast<Item*>(this->objects[i]));
