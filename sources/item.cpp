@@ -1,6 +1,6 @@
 #include "../headers/items.h"
 
-Item::Item(string _name, int _money, int _addHp, int _addAtk, int _addDef, int _addFullness, int _addMoisture, int _addVitality): Object(_name, "item"), money(_money), addHp(_addHp), addAtk(_addAtk), addDef(_addDef), addFullness(_addFullness), addMoisture(_addMoisture), addVitality(_addVitality) {}
+Item::Item(string _name, int _money, int _addHp, int _addAtk, int _addDef, int _addFullness, int _addMoisture, int _addVitality): Object(_name, "Item"), money(_money), addHp(_addHp), addAtk(_addAtk), addDef(_addDef), addFullness(_addFullness), addMoisture(_addMoisture), addVitality(_addVitality) {}
 
 int Item::getMoney() const { return money; }
 int Item::getAddHp() const { return addHp; }

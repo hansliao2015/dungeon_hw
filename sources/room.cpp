@@ -49,7 +49,7 @@ void Room::encounterObjects(Player *player) {
     for (int i = 0; i < this->objects.size(); i++) {
         if (player->checkIsDead()) return;
         cout << "玩家移動中…" << endl;
-        cout << "前方有" << this->objects[i]->getName() << "，是否選擇繼續向前?" << endl;
+        cout << "前方有" << this->objects[i]->getTag() << "，是否選擇繼續向前?" << endl;
         cout << "你可以選擇:" << endl;
         cout << "1. 繼續向前" << endl;
         cout << "2. 退回上個房間" << endl;

@@ -18,6 +18,13 @@ private:
     vector<Antidote *> antidotes;
     vector<Monster *> monsters;
     vector<Npc *> npcs;
+    void initEquipments();
+    void initFoods();
+    void initAntidotes();
+    void initPlayer();
+    void initNpcs();
+    void initMonsters();
+    void initRooms();
 public:
     Dungeon();
     Player* player;
@@ -26,11 +33,6 @@ public:
     bool isPlayerWin();
     bool isPlayerLose();
     void init();
-    void initPlayer();
-    void initFoods();
-    void initNpcs();
-    void initMonsters();
-    void initRooms();
     void handleMovement();
     void showOption();
     void printResult();

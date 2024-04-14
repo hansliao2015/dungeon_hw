@@ -21,6 +21,8 @@ void Dungeon::init() {
     clear();
     cout << ("遊戲初始化中...\n");
     initFoods();
+    initEquipments();
+    initAntidotes();
     initNpcs();
     initMonsters();
     initRooms();
@@ -37,11 +39,24 @@ void Dungeon::initPlayer() {
     player = new Player(name, 200, 20, 5, 100, 100, 100, 10);
 }
 
+void Dungeon::initEquipments() {
+    equipments.push_back(new Equipment("鐵劍", 10, 10, 0, 0, 0, 0, 0));
+    equipments.push_back(new Equipment("鐵甲", 10, 0, 10, 0, 0, 0, 0));
+    equipments.push_back(new Equipment("鐵盾", 10, 0, 0, 10, 0, 0, 0));
+    equipments.push_back(new Equipment("鐵靴", 10, 0, 0, 0, 10, 0, 0));
+    equipments.push_back(new Equipment("鐵帽", 10, 0, 0, 0, 0, 10, 0));
+}
+
 void Dungeon::initFoods() {
     cout << ("正在初始化食物...\n");
     foods.push_back(new Food("麵包", 5, 10, 10, 0, 5));
     foods.push_back(new Food("蘋果", 3, 5, 5, 8, 3));
     foods.push_back(new Food("肉湯", 10, 15, 15, 15, 15));
+}
+
+void Dungeon::initAntidotes() {
+    antidotes.push_back(new Antidote("牛奶", 10));
+    antidotes.push_back(new Antidote("藥水", 20));
 }
 
 void Dungeon::initNpcs() {
@@ -95,6 +110,7 @@ void Dungeon::initRooms() {
     rooms.push_back(forest);
     rooms[10]->setIsExit(true);
     rooms[1]->addObject(npcs[0]);
+    rooms[1]->addObject(antidotes[0]);
     rooms[2]->addObject(npcs[1]);
     rooms[4]->addObject(npcs[2]);
     rooms[5]->addObject(npcs[3]);
@@ -255,6 +271,15 @@ void Dungeon::drawGameConsole() {
     else {
         cout << "    ███████████████████████████████   " << endl;
         cout << "                                      " << endl;
+        cout << "                                      " << endl;
+    }
+    if (player->getCurrentRoom()->getObjects().size() > 0) {
+        cout << "出現順序: ";
+        for (auto object: player->getCurrentRoom()->getObjects()) {
+            cout << object->getTag() << " ";
+        }
+        cout << endl;
+    } else {
         cout << "                                      " << endl;
     }
     cout << "                                      " << endl;

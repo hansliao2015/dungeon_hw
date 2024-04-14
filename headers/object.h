@@ -13,4 +13,5 @@ public:
     virtual ~Object();
     string getName() const;
     string getTag() const;
+    void setTag(string);
 };

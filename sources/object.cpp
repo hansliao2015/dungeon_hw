@@ -6,3 +6,4 @@ Object::~Object() {}
 
 string Object::getName() const { return name; }
 string Object::getTag() const { return tag; }
+void Object::setTag(string t) { tag = t; }

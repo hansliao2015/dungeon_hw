@@ -38,7 +38,7 @@ public:
 
 class Equipment: public Item {
 public:
-    Equipment(string, int, int, int, int, int, int, int);
+    Equipment(string _name, int _money, int _addHp, int _addAtk, int _addDef, int _addFullness, int _addMoisture, int _addVitality);
     void use(Player*) override;
 };
 
