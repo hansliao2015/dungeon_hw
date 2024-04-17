@@ -1,8 +1,9 @@
 #include "../headers/utils.h"
 #include <iostream>
-using namespace std;
+#include <termios.h>
+#include <unistd.h>
 
 void wait() {
-    typewriter("按任意鍵繼續...");
-    cin.get();
+    std::cout << "按任意鍵繼續...\n";
+    input();
 }

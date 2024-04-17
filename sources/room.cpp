@@ -30,8 +30,7 @@ void Room::addObject(Object *object) {
 
 void Room::roomAction(Player *player) {
     typewriter("這裡是房間" + to_string(this->getIndex()) + "\n");
-    
-    cout << "你來到了" << tag <<"，在這裡你不會遇到任何東西，可以安心地調整狀態，休息過後再出發。";
+    typewriter("在這裡你不會遇到任何東西，可以安心地調整狀態，休息過後再出發。\n");
 }
 
 bool Room::canPass() {
@@ -50,16 +49,27 @@ void Room::encounterObjects(Player *player) {
     for (int i = 0; i < this->objects.size(); i++) {
         if (player->checkIsDead()) return;
         cout << "玩家移動中…" << endl;
-        cout << "你發現了" << this->objects[i]->getName() << "，是否選擇繼續向前?" << endl;
-        cout << "請選擇你的選項(y/n):" << endl;
-        char option;
-        cin >> option;
-        if (option == 'y') {
+        cout << "前方有" << this->objects[i]->getTag() << "，是否選擇繼續向前?" << endl;
+        cout << "你可以選擇:" << endl;
+        cout << "1. 繼續向前" << endl;
+        cout << "2. 退回上個房間" << endl;
+        char option = input();
+        if (option == '1') {
             if (dynamic_cast<Item*>(this->objects[i])) {
-                player->addItem(dynamic_cast<Item*>(this->objects[i]));
-                cout << "你獲得了" << this->objects[i]->getName() << "，已放入背包。" << endl;
-                this->objects.erase(this->objects.begin() + i);
-                --i;
+                cout << "是否選擇將" << this->objects[i]->getName() << "放入背包?" << endl;
+                cout << "1. 是" << endl;
+                cout << "2. 否" << endl;
+                option = input();
+                if (option == '1') {
+                    player->addItem(dynamic_cast<Item*>(this->objects[i]));
+                    cout << "你獲得了" << this->objects[i]->getName() << "，已放入背包。" << endl;
+                    this->objects.erase(this->objects.begin() + i);
+                    --i;
+                } else if (option == '2') {
+                    cout << "你選擇忽略" << this->objects[i]->getName() << "。" << endl;
+                } else {
+                    cout << "無效的選擇" << endl;
+                }
             } 
             else if (dynamic_cast<GameCharacter*>(this->objects[i])) {
                 dynamic_cast<GameCharacter*>(this->objects[i])->triggerEvent(player);
@@ -69,7 +79,10 @@ void Room::encounterObjects(Player *player) {
                 }
             }
         }
-        if (option == 'n') cout << "你選擇退回上個房間" << endl;
+        if (option == '2') {
+            cout << "你選擇退回上個房間。" << endl;
+
+        }
         if (i == this->objects.size()-1) cout << "你走到了房間的盡頭。" << endl;
     }
 }

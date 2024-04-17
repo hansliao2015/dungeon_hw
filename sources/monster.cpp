@@ -5,7 +5,6 @@ Monster::Monster(string _name, int _money, int _maxHp, int _atk, int _def): Game
 Item* Monster::getDropItem() const { return dropItem; }
 
 void Monster::triggerEvent(GameCharacter* gameCharacter) {
-    cout << "你遇到了" << getName() << endl;
     dynamic_cast<Player*>(gameCharacter)->launchBattle(this);
 
 }

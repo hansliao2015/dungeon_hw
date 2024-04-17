@@ -15,42 +15,52 @@ bool Dungeon::isPlayerLose() {
     return player->checkIsDead();
 }
 
-void Dungeon::transition() {
-    typewriter("移動至下個房間...\n");
-    player->updateTransitionState();
-    player->briefState();
-}
 
 
 void Dungeon::init() {
-    typewriter("遊戲初始化中...\n");
+    clear();
+    cout << ("遊戲初始化中...\n");
     initFoods();
+    initEquipments();
+    initAntidotes();
     initNpcs();
     initMonsters();
     initRooms();
     initPlayer();
     player->setCurrentRoom(room);
     player->setPreviousRoom(room);
-    typewriter("遊戲初始化完成!\n");
-    typewriter("歡迎來到地下城!\n");
+    cout << ("遊戲初始化完成!\n");
 }
 
 void Dungeon::initPlayer() {
-    typewriter("請問你的名字是?\n");
+    cout << ("請問你的名字是?\n");
     string name;
     cin >> name;
     player = new Player(name, 200, 20, 5, 100, 100, 100, 10);
 }
 
+void Dungeon::initEquipments() {
+    equipments.push_back(new Equipment("鐵劍", 10, 10, 0, 0, 0, 0, 0));
+    equipments.push_back(new Equipment("鐵甲", 10, 0, 10, 0, 0, 0, 0));
+    equipments.push_back(new Equipment("鐵盾", 10, 0, 0, 10, 0, 0, 0));
+    equipments.push_back(new Equipment("鐵靴", 10, 0, 0, 0, 10, 0, 0));
+    equipments.push_back(new Equipment("鐵帽", 10, 0, 0, 0, 0, 10, 0));
+}
+
 void Dungeon::initFoods() {
-    typewriter("正在初始化食物...\n");
+    cout << ("正在初始化食物...\n");
     foods.push_back(new Food("麵包", 5, 10, 10, 0, 5));
     foods.push_back(new Food("蘋果", 3, 5, 5, 8, 3));
     foods.push_back(new Food("肉湯", 10, 15, 15, 15, 15));
 }
 
+void Dungeon::initAntidotes() {
+    antidotes.push_back(new Antidote("牛奶", 10));
+    antidotes.push_back(new Antidote("藥水", 20));
+}
+
 void Dungeon::initNpcs() {
-    typewriter("正在初始化NPC...\n");
+    cout << ("正在初始化NPC...\n");
     vector<string> npcLines;
     vector<string> npcNames;
     npcLines.push_back("小心毒蛇的攻擊。他們會在你身上留下猛毒!");
@@ -67,7 +77,7 @@ void Dungeon::initNpcs() {
 }
 
 void Dungeon::initMonsters() {
-    typewriter("正在初始化怪物...\n");
+    cout << ("正在初始化怪物...\n");
     monsters.push_back(new Monster("蛇", 30, 30, 5, 5));
     monsters.push_back(new Monster("蠍子", 25, 30, 10, 5));
     monsters.push_back(new Monster("狼", 100, 50, 15, 10));
@@ -76,7 +86,7 @@ void Dungeon::initMonsters() {
 
 
 void Dungeon::initRooms() {
-    typewriter("正在初始化房間...\n");
+    cout << ("正在初始化房間...\n");
     vector<Room*> rooms;
     for (int i = 0; i <= 9; i++) {
         if (i%3 == 0) {
@@ -100,6 +110,7 @@ void Dungeon::initRooms() {
     rooms.push_back(forest);
     rooms[10]->setIsExit(true);
     rooms[1]->addObject(npcs[0]);
+    rooms[1]->addObject(antidotes[0]);
     rooms[2]->addObject(npcs[1]);
     rooms[4]->addObject(npcs[2]);
     rooms[5]->addObject(npcs[3]);
@@ -138,38 +149,32 @@ void Dungeon::initRooms() {
 
 void Dungeon::handleMovement() {
     if (!player->getCurrentRoom()->canPass()) {
-        typewriter("這個房間裡有怪物，你只能選擇撤退，或是打倒怪物後繼續前進!\n");
-        return;
+        typewriter("這個房間裡有怪物，你只能選擇回到原本房間，或是打倒怪物後繼續前進!\n");
     }
     typewriter("你可以選擇...\n");
-    bool option1 = player->getCurrentRoom()->getUpRoom() && (player->getCurrentRoom()->getUpRoom() != player->getPreviousRoom());
-    bool option2 = player->getCurrentRoom()->getDownRoom() && (player->getCurrentRoom()->getDownRoom() != player->getPreviousRoom());
-    bool option3 = player->getCurrentRoom()->getLeftRoom() && (player->getCurrentRoom()->getLeftRoom() != player->getPreviousRoom());
-    bool option4 = player->getCurrentRoom()->getRightRoom() && (player->getCurrentRoom()->getRightRoom() != player->getPreviousRoom());
+    bool option1 = player->getCurrentRoom()->getUpRoom();
+    bool option2 = player->getCurrentRoom()->getDownRoom();
+    bool option3 = player->getCurrentRoom()->getLeftRoom();
+    bool option4 = player->getCurrentRoom()->getRightRoom();
 
     if (option1) 
         typewriter("往上走(1)\n");
-        cout << "往上走(1)" << endl;
     if (option2)
         typewriter("往下走(2)\n");
     if (option3)
         typewriter("往左走(3)\n");
     if (option4)
         typewriter("往右走(4)\n");
-    typewriter("撤退(5)\n>> ");
 
-    int direction;
-    cin >> direction;
-    if (direction == 1 && option1) {
+    char direction = input();
+    if (direction == '1' && option1) {
         player->changeRoom(player->getCurrentRoom()->getUpRoom());
-    } else if (direction == 2 && option2) {
+    } else if (direction == '2' && option2) {
         player->changeRoom(player->getCurrentRoom()->getDownRoom());
-    } else if (direction == 3 && option3) {
+    } else if (direction == '3' && option3) {
         player->changeRoom(player->getCurrentRoom()->getLeftRoom());
-    } else if (direction == 4 && option4) {
+    } else if (direction == '4' && option4) {
         player->changeRoom(player->getCurrentRoom()->getRightRoom());
-    } else if (direction == 5) {
-        player->retreat();
     } else {
         typewriter("請選擇正確的方向!\n");
         handleMovement();
@@ -179,23 +184,31 @@ void Dungeon::handleMovement() {
 
 }
 void Dungeon::showOption() {
-    typewriter(
+    string n = (
         "你可以選擇...\n"
-        "1. 移動\n"
+        "1. 移動至別的房間\n"
         "2. 查看狀態\n"
         "3. 打開背包\n"
         "4. 繼續前行\n>> "
     );
-    int option;
-    cin >> option;
-    if (option == 1) {
+    typewriter(n);
+    char choice;
+    choice = input();
+    if (choice == '1') {
         handleMovement();
-    } else if (option == 2) {
+    } else if (choice == '2') {
         player->detailedState();
         wait();
-        showOption();
-    } else if (option == 3) {
+        drawGameConsole();
+    } else if (choice == '3') {
         player->openBackpack();
+        wait();
+        drawGameConsole();
+    } else if (choice == '4') {
+        return;
+    } else {
+        cout << "你按下了" << choice << "，請選擇正確的選項!\n"; 
+        typewriter("請選擇正確的選項!\n");
         wait();
         showOption();
     }
@@ -212,15 +225,68 @@ void Dungeon::printResult() {
 
 void Dungeon::runGame() {
     while (!isGameOver()) {
-        transition();
-        isPlayerChangeRoom = false;
+        drawGameConsole();
         if (isGameOver()) break;
-        showOption();
-        if (isPlayerChangeRoom) continue;
-        player->getCurrentRoom()->roomAction(player);
-        if (isPlayerChangeRoom) continue;
-        if (player->getCurrentRoom()->tag != "普通房間") showOption();
+        
     }
+}
+
+void Dungeon::drawGameConsole() {
+    clear();
+    cout << "---------------------------------------------------------------------\n";
+    cout << "           " << player->getCurrentRoom()->getIndex() << "號房間:" << player->getCurrentRoom()->tag << endl;
+    if (player->getCurrentRoom()->getUpRoom()) {
+        cout << "                   ↑                  " << endl;
+        cout << "                                      " << endl;
+        cout << "    ███████████████ ███████████████   " <<  "  玩家: " << player->getName() << endl;
+    }
+    else {
+        cout << "                                      " << endl;
+        cout << "                                      " << endl;
+        cout << "    ███████████████████████████████   " <<  "  玩家: " << player->getName() << endl;
+    }
+    cout << "    █                             █   " <<  "  血量: " << player->getCurrentHp() << "/" << player->getMaxHp() << endl;  
+    cout << "    █                             █   " <<  "  攻擊: " << player->getAtk() << endl;
+    cout << "    █                             █   " <<  "  防禦: " << player->getDef() << endl;
+    cout << "    █                             █   " << endl;
+    cout << "    █                             █   " << endl;
+    if (player->getCurrentRoom()->getLeftRoom() && player->getCurrentRoom()->getRightRoom())
+    cout << "←                                   → " << endl;
+    else if (player->getCurrentRoom()->getLeftRoom())
+    cout << "←                                 █   " << endl;
+    else if (player->getCurrentRoom()->getRightRoom())
+    cout << "    █                               → " << endl;
+    else
+    cout << "    █                             █   " << endl; 
+    cout << "    █                             █   " << endl;
+    cout << "    █                             █   " << endl;
+    cout << "    █                             █   " << endl;
+    cout << "    █                             █   " << endl;
+    cout << "    █                             █   " << endl;
+    if (player->getCurrentRoom()->getDownRoom()) {
+        cout << "    ███████████████ ███████████████   " << endl;
+        cout << "                                      " << endl;
+        cout << "                   ↓                  " << endl;
+    }
+    else {
+        cout << "    ███████████████████████████████   " << endl;
+        cout << "                                      " << endl;
+        cout << "                                      " << endl;
+    }
+    if (player->getCurrentRoom()->getObjects().size() > 0) {
+        cout << "出現順序: ";
+        for (auto object: player->getCurrentRoom()->getObjects()) {
+            cout << object->getTag() << " ";
+        }
+        cout << endl;
+    } else {
+        cout << "                                      " << endl;
+    }
+    cout << "                                      " << endl;
+    cout << "---------------------------------------------------------------------\n";
+    
+    player->getCurrentRoom()->roomAction(player);
+    showOption();
 }
 
 
