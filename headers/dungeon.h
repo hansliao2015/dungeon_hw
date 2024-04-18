@@ -33,9 +33,6 @@ public:
     bool isPlayerWin();
     bool isPlayerLose();
     void init();
-    void handleMovement();
-    void showOption();
     void printResult();
     void runGame();
-    void drawGameConsole();
 };
