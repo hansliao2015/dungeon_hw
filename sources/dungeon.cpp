@@ -107,7 +107,7 @@ void Dungeon::initRooms() {
     room = rooms[0];
     Forest *forest = new Forest(10);
     forest->addObject(monsters[3]);
-    rooms.push_back(forest);
+    rooms[10] = forest;
     rooms[10]->setIsExit(true);
     rooms[1]->addObject(npcs[0]);
     rooms[1]->addObject(antidotes[0]);
@@ -158,13 +158,9 @@ void Dungeon::printResult() {
 }
 
 void Dungeon::runGame() {
-    while (!isGameOver()) {
-        
-        player->getCurrentRoom()->drawRoomAndPlayerState(player);
+    while (true) {
         player->getCurrentRoom()->roomAction(player);
-        player->getCurrentRoom()->showPlayerOptions(player);
         if (isGameOver()) break;
-        
     }
 }
 

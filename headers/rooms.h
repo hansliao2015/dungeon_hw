@@ -18,6 +18,7 @@ private:
     Room *rightRoom;
     bool isExit;
     vector<Object *> objects;
+    void handlePlayerMovements(Player *player);
 public:
     Room(int);
 
@@ -46,7 +47,6 @@ public:
     void encounterObjects(Player *player);
     virtual void drawRoomAndPlayerState(Player *player);
     void showPlayerOptions(Player *player);
-    void handlePlayerMovements(Player *player);
 };
 
 class Desert: public Room {
