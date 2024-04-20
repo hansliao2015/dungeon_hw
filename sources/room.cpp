@@ -220,11 +220,10 @@ bool Room::showPlayerOptions(Player *player) {
         } else if (choice == '3') {
             player->openBackpack();
             wait();
-            player->getCurrentRoom()->drawRoomAndPlayerState(player);
+            return true;
 
         } else if (choice == '4') {
-
-            return true;
+            return false;
         } else {
             cout << "你按下了" << choice << "，請選擇正確的選項!\n"; 
             typewriter("請選擇正確的選項!\n");

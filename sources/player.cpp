@@ -143,6 +143,7 @@ void Player::launchBattle(GameCharacter *enemy) {
                     typewriter("你獲得了" + dynamic_cast<Monster*>(enemy)->getDropItem()->getName() + "，已放入背包。\n");
                 }
             }
+            wait();
             break;
         }
         takeDamage(enemy->getAtk());
