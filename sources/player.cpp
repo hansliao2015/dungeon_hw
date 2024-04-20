@@ -32,15 +32,7 @@ void Player::retreat() {
 }
 
 void Player::briefState() {
-    string n = (
-        "玩家: " + getName() + "\n"
-        "血量: " + to_string(getCurrentHp()) + "/" + to_string(getMaxHp()) + "\n"
-        "攻擊: " + to_string(getAtk()) + "\n"
-        "防禦: " + to_string(getDef()) + "\n"
-    );
-    if (equippedItem) n += "裝備: " + equippedItem->getName() + "\n";
-    else n += "裝備: 無\n";
-    typewriter(n);
+    detailedState();
 }
 
 void Player::detailedState() {

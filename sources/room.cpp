@@ -51,12 +51,17 @@ bool Room::canPass() {
 bool Room::encounterObjects(Player *player) {
     // return true if player wants to change room
     while (true) {
+        if (player->checkIsDead())  {
+            cout << "你已經死亡，無法繼續遊戲。" << endl;
+            wait();
+            // return true;
+        }
+        if (this->objects.size() == 0) {
+            cout << "這個房間裡已經沒有任何東西了!" << endl;
+            wait();
+            return false;
+        }
         for (int i = 0; i < this->objects.size(); i++) {
-            if (player->checkIsDead())  {
-                cout << "你已經死亡，無法繼續遊戲。" << endl;
-                wait();
-                // return true;
-            }
             drawRoomAndPlayerState(player);
             cout << "目前房間物件數量: " << this->objects.size() << endl;
             cout << "玩家移動中…" << endl;
@@ -241,7 +246,7 @@ bool Room::showPlayerOptions(Player *player) {
                 cout << "你按下了" << choice << "，請選擇正確的選項!\n"; 
                 typewriter("請選擇正確的選項!\n");
                 wait();
-                showPlayerOptions(player);
+                continue;
             }
         }
         return false;

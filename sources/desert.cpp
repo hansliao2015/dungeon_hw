@@ -14,6 +14,11 @@ void Desert::roomAction(Player *player) {
     if (isChangingRoom) return;
     bool isLeaving = encounterObjects(player);
     if (isLeaving) return;
+    if (getIsExit() && canPass()) {
+        cout << "你找到了出口的房間，離開了dungeon" << tag << endl;
+        wait();
+        return;
+    }
     bool isChangingRoom2 = showPlayerOptions(player);
     if (isChangingRoom2) return;
 }
