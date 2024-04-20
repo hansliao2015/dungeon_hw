@@ -58,7 +58,7 @@ bool Room::encounterObjects(Player *player) {
                 return true;
             }
             drawRoomAndPlayerState(player);
-            cout << "你現在遇到了" << i << "號物件\n";
+            cout << "目前房間物件數量: " << this->objects.size() << endl;
             cout << "玩家移動中…" << endl;
             cout << "前方出現了" << this->objects[i]->getTag() << endl;
             cout << "你可以選擇:" << endl;
@@ -85,6 +85,7 @@ bool Room::encounterObjects(Player *player) {
                         cout << "你獲得了" << this->objects[i]->getName() << "，已放入背包。" << endl;
                         this->objects.erase(this->objects.begin() + i);
                         --i;
+                        continue;
                     } else if (option == '2') {
                         cout << "你選擇忽略" << this->objects[i]->getName() << "。" << endl;
                         wait();
@@ -97,14 +98,12 @@ bool Room::encounterObjects(Player *player) {
                 } 
                 else if (dynamic_cast<GameCharacter*>(this->objects[i])) {
                     drawRoomAndPlayerState(player);
-                    if (dynamic_cast<GameCharacter*>(this->objects[i])->triggerEvent(player)) {
-                        return true;
-                    }
+                    dynamic_cast<GameCharacter*>(this->objects[i])->triggerEvent(player);
                     if (static_cast<GameCharacter*>(this->objects[i])->checkIsDead()) {
                         this->objects.erase(this->objects.begin() + i);
                         --i;
+                        continue;
                     }
-                    continue;
                 }
             }
             else if (option == '2') {
