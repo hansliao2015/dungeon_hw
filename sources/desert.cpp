@@ -14,5 +14,6 @@ void Desert::roomAction(Player *player) {
     if (isChangingRoom) return;
     bool isLeaving = encounterObjects(player);
     if (isLeaving) return;
-    showPlayerOptions(player);
+    bool isChangingRoom2 = showPlayerOptions(player);
+    if (isChangingRoom2) return;
 }

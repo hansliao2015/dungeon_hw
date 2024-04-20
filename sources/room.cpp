@@ -55,7 +55,7 @@ bool Room::encounterObjects(Player *player) {
             if (player->checkIsDead())  {
                 cout << "你已經死亡，無法繼續遊戲。" << endl;
                 wait();
-                return true;
+                // return true;
             }
             drawRoomAndPlayerState(player);
             cout << "目前房間物件數量: " << this->objects.size() << endl;
@@ -265,7 +265,6 @@ bool Room::handlePlayerMovements(Player *player) {
                 return false;
             } else {
                 typewriter("請選擇正確的選項!\n");
-                handlePlayerMovements(player);
                 continue;
             }
 
