@@ -98,7 +98,7 @@ void Player::setPreviousRoom(Room *room) { previousRoom = room; }
 
 void Player::setInfectedPoison(Poison *poison) { infectedPoison = poison; }
 
-void Player::updateTransitionState() {
+void Player::updatePosionDamage() {
     if (infectedPoison) {
         if (infectedPoison->getDuration() == 0) {
             infectedPoison = nullptr;

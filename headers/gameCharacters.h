@@ -71,7 +71,7 @@ public:
     void setCurrentRoom(Room*);
     void setPreviousRoom(Room*);
     void setInfectedPoison(Poison*);
-    void updateTransitionState();
+    void updatePosionDamage();
     void launchBattle(GameCharacter* enemy);
     void triggerEvent(GameCharacter* gameCharacter) override;
     void updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int vitalityDamage);

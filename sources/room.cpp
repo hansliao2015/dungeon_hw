@@ -55,6 +55,17 @@ void Room::encounterObjects(Player *player) {
         cout << "你可以選擇:" << endl;
         cout << "1. 繼續向前" << endl;
         cout << "2. 退回上個房間" << endl;
+        bool noMonster = true;
+        for (int j = 0; j < this->objects.size(); j++) {
+            if (this->objects[j]->getTag() == "Monster") {
+                noMonster = false;
+                break;
+            }
+        }
+        if (noMonster) {
+            cout << "3. 移動至新的房間" << endl;
+            continue;
+        }
         char option = input();
         if (option == '1') {
             if (dynamic_cast<Item*>(this->objects[i])) {
@@ -84,6 +95,10 @@ void Room::encounterObjects(Player *player) {
         if (option == '2') {
             cout << "你選擇退回上個房間。" << endl;
 
+        }
+        if (noMonster && option == '3') {
+            cout << "你選擇移動至新的房間。" << endl;
+            handlePlayerMovements(player);
         }
         if (i == this->objects.size()-1) cout << "你走到了房間的盡頭。" << endl;
     }
