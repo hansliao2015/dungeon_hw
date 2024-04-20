@@ -46,7 +46,7 @@ public:
     bool canPass();
     bool encounterObjects(Player *player);
     virtual void drawRoomAndPlayerState(Player *player);
-    void showPlayerOptions(Player *player);
+    bool showPlayerOptions(Player *player);
 };
 
 class Desert: public Room {

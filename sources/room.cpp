@@ -32,6 +32,7 @@ void Room::roomAction(Player *player) {
     drawRoomAndPlayerState(player);
     typewriter("這裡是房間" + to_string(this->getIndex()) + "\n");
     typewriter("在這裡你不會遇到任何東西，可以安心地調整狀態，休息過後再出發。\n");
+    wait();
     showPlayerOptions(player);
 }
 
@@ -164,8 +165,9 @@ void Room::drawRoomAndPlayerState(Player *player) {
     cout << "---------------------------------------------------------------------\n";
 }
 
-void Room::showPlayerOptions(Player *player) {
-    if (player->checkIsDead()) return;
+bool Room::showPlayerOptions(Player *player) {
+    drawRoomAndPlayerState(player);
+    if (player->checkIsDead()) return true;
     string n = "debug: function Room::showPlayerOptions()\n";
     if (player->getCurrentRoom()->tag == "空房間") {
         n = (
@@ -213,7 +215,7 @@ void Room::showPlayerOptions(Player *player) {
         } else if (choice == '2') {
             player->detailedState();
             wait();
-            player->getCurrentRoom()->drawRoomAndPlayerState(player);
+            return true;
 
         } else if (choice == '3') {
             player->openBackpack();
@@ -222,7 +224,7 @@ void Room::showPlayerOptions(Player *player) {
 
         } else if (choice == '4') {
 
-            return;
+            return true;
         } else {
             cout << "你按下了" << choice << "，請選擇正確的選項!\n"; 
             typewriter("請選擇正確的選項!\n");
@@ -231,6 +233,7 @@ void Room::showPlayerOptions(Player *player) {
         }
         
     }
+    return false;
 
 }
 
