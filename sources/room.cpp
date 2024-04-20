@@ -65,12 +65,12 @@ bool Room::encounterObjects(Player *player) {
             cout << "1. 繼續向前" << endl;
             cout << "2. 退回上個房間" << endl;
 
-            // 檢查有沒有房間內有沒有 monster
+            // 檢查房間內有沒有 monster
             bool noMonster = canPass();
 
             if (noMonster) {
                 cout << "3. 移動至新的房間" << endl;
-                return true;
+                //return true;
             }
             char option = input();
             if (option == '1') {
