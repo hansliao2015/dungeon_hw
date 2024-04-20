@@ -13,7 +13,7 @@ Npc::Npc(int _index, string _line, string _name, int _money, int _maxHp, int _at
 	`if (開啟戰鬥) dynamic_cast<Player*>->triggerEvent(this)`
 `}`
 */
-void Npc::triggerEvent(GameCharacter* gameCharacter) {
+bool Npc::triggerEvent(GameCharacter* gameCharacter) {
     cout << getName() << "和你開啟了對話" << endl;
     cout << getName() << ": " << "你好冒險者，想要和我交易嗎?" << endl;
     cout << "Option1: 交易, Option2: 默默離開, Option3: 開啟戰鬥" << endl;
@@ -22,12 +22,15 @@ void Npc::triggerEvent(GameCharacter* gameCharacter) {
     cin >> choice;
     if (choice == 1) {
         trade(gameCharacter);
+        return false;
     } else if (choice == 2) {
         cout << getName() << ": 歡迎下次光臨" << endl;
+        return false;
     } else if (choice == 3) {
         Player *player = dynamic_cast<Player*>(gameCharacter);
-        player->triggerEvent(this);
+        if (player->triggerEvent(this)) return true;
     }
+    return false;
 
 }
 

@@ -36,7 +36,7 @@ public:
     void setMoney(int);
     void takeDamage(int);
     bool checkIsDead() const;
-    virtual void triggerEvent(GameCharacter* gameCharacter) = 0;
+    virtual bool triggerEvent(GameCharacter* gameCharacter) = 0;
 };
 
 
@@ -72,8 +72,8 @@ public:
     void setPreviousRoom(Room*);
     void setInfectedPoison(Poison*);
     void updatePosionDamage();
-    void launchBattle(GameCharacter* enemy);
-    void triggerEvent(GameCharacter* gameCharacter) override;
+    bool launchBattle(GameCharacter* enemy);
+    bool triggerEvent(GameCharacter* gameCharacter) override;
     void updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int vitalityDamage);
     void openBackpack();
 };
@@ -86,7 +86,7 @@ private:
 public:
     Monster(string _name, int _money, int _maxHp, int _atk, int _def);
     Item* getDropItem() const;
-    void triggerEvent(GameCharacter* gameCharacter) override;
+    bool triggerEvent(GameCharacter* gameCharacter) override;
 };
 
 class Npc: public GameCharacter {
@@ -96,7 +96,7 @@ private:
     vector<Item*> items;
 public:
     Npc(int index, string line, string _name, int _money, int _maxHp, int _atk, int _def);
-    void triggerEvent(GameCharacter* gameCharacter) override;
+    bool triggerEvent(GameCharacter* gameCharacter) override;
     void addItem(Item *item);
     void speak();
     void trade(GameCharacter*);

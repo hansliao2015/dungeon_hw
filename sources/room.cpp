@@ -89,7 +89,9 @@ bool Room::encounterObjects(Player *player) {
             } 
             else if (dynamic_cast<GameCharacter*>(this->objects[i])) {
                 drawRoomAndPlayerState(player);
-                dynamic_cast<GameCharacter*>(this->objects[i])->triggerEvent(player);
+                if (dynamic_cast<GameCharacter*>(this->objects[i])->triggerEvent(player)) {
+                    return true;
+                }
                 if (static_cast<GameCharacter*>(this->objects[i])->checkIsDead()) {
                     this->objects.erase(this->objects.begin() + i);
                     --i;

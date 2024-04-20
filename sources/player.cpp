@@ -115,14 +115,14 @@ void Player::updatePosionDamage() {
 }
 
 
-void Player::launchBattle(GameCharacter *enemy) {
+bool Player::launchBattle(GameCharacter *enemy) {
     while (true) {
         typewriter("輸入q以離開戰鬥\n");
         typewriter("輸入a以攻擊\n");
         char choice = input();
         if (choice == 'q') {
             retreat();
-            break;
+            return true;
         } else if (choice == 'a') {
             typewriter("你對" + enemy->getName() + "發動了攻擊\n");
         } else {
@@ -144,7 +144,7 @@ void Player::launchBattle(GameCharacter *enemy) {
                 }
             }
             wait();
-            break;
+            return false;
         }
         takeDamage(enemy->getAtk());
         typewriter("你剩餘HP: " + to_string(currentHp) + "/" + to_string(maxHp) + "\n");
@@ -152,13 +152,14 @@ void Player::launchBattle(GameCharacter *enemy) {
         if (currentHp <= 0) {
             typewriter("你死了!\n");
             wait();
-            break;
+            return true;
         }
     }
+    return false;
 }
 
-void Player::triggerEvent(GameCharacter* gameCharacter) {
-    launchBattle(gameCharacter);
+bool Player::triggerEvent(GameCharacter* gameCharacter) {
+    return launchBattle(gameCharacter);
 }
 
 void Player::updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int vitalityDamage) {
