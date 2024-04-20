@@ -18,7 +18,7 @@ private:
     Room *rightRoom;
     bool isExit;
     vector<Object *> objects;
-    void handlePlayerMovements(Player *player);
+    bool handlePlayerMovements(Player *player);
 public:
     Room(int);
 

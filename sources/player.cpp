@@ -53,6 +53,7 @@ void Player::detailedState() {
         "飽足: " + to_string(fullness) + "\n"
         "滋潤: " + to_string(moisture) + "\n"
         "精神: " + to_string(vitality) + "\n"
+        "金錢: " + to_string(money) + "\n"
     );
     if (infectedPoison) n += "負面狀態--中毒: " + infectedPoison->getName() + "\n";
     else {
@@ -116,22 +117,21 @@ void Player::updatePosionDamage() {
 
 
 bool Player::launchBattle(GameCharacter *enemy) {
+    typewriter("輸入q以離開戰鬥\n");
+    typewriter("輸入a以攻擊\n");
     while (true) {
-        typewriter("輸入q以離開戰鬥\n");
-        typewriter("輸入a以攻擊\n");
         char choice = input();
         if (choice == 'q') {
             retreat();
             return true;
         } else if (choice == 'a') {
-            typewriter("你對" + enemy->getName() + "發動了攻擊\n");
         } else {
             typewriter("無效的選擇\n");
             continue;
         }
         enemy->takeDamage(atk);
-        typewriter("你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n");
-        typewriter(enemy->getName() + "剩餘HP: " + to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n");
+        cout << "你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n";
+        cout << enemy->getName() + "剩餘HP: " + to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n";
 
         if (enemy->checkIsDead()) {
             typewriter("你贏了!\n");

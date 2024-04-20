@@ -160,6 +160,5 @@ void Dungeon::printResult() {
 void Dungeon::runGame() {
     while (!player->checkIsDead() && !isPlayerWin()) {
         player->getCurrentRoom()->roomAction(player);
-        if (isPlayerWin() || isPlayerLose()) break;
     }
 }
