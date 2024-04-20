@@ -7,7 +7,9 @@ void Forest::roomAction(Player *player) {
     cout << "這裡是房間" << this->getIndex() << endl;
     cout << "你來到了" << tag << "，因為徒步而行而感到飢餓，飽足-1\n";
     player->updateEnvironmentDamage(1, 0, 0);
+    if (player->getCurrentHp() <= 0) return;
     showPlayerOptions(player);
-    encounterObjects(player);
+    bool isLeaving = encounterObjects(player);
+    if (isLeaving) return;
     showPlayerOptions(player);
 }

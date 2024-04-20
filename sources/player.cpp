@@ -66,9 +66,13 @@ void Player::detailedState() {
         n += "\n";
     }
     n += "背包內物品: " ;
-    for (int i = 0; i < backpack.size(); i++) {
-        n += backpack[i]->getName() + " ";
+    if (backpack.size() == 0) n += "無\n";
+    else {
+        for (int i = 0; i < backpack.size(); i++) {
+            n += backpack[i]->getName() + " ";
+        }
     }
+    typewriter(n);
 }
 
 void Player::equip(Equipment *equipment) {
@@ -146,6 +150,7 @@ void Player::launchBattle(GameCharacter *enemy) {
         typewriter(enemy->getName() + "對你造成了" + to_string(enemy->getAtk() - def) + "點傷害\n");
         if (currentHp <= 0) {
             typewriter("你死了!\n");
+            wait();
             break;
         }
     }

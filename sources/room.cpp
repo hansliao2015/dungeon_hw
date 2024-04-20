@@ -47,9 +47,10 @@ bool Room::canPass() {
 }
 
 //Room不會用到encounterObjects()
-void Room::encounterObjects(Player *player) {
+bool Room::encounterObjects(Player *player) {
     for (int i = 0; i < this->objects.size(); i++) {
-        if (player->checkIsDead()) return;
+        if (player->checkIsDead()) return true;
+        drawRoomAndPlayerState(player);
         cout << "玩家移動中…" << endl;
         cout << "前方有" << this->objects[i]->getTag() << "，是否選擇繼續向前?" << endl;
         cout << "你可以選擇:" << endl;
@@ -64,11 +65,12 @@ void Room::encounterObjects(Player *player) {
         }
         if (noMonster) {
             cout << "3. 移動至新的房間" << endl;
-            continue;
+            return true;
         }
         char option = input();
         if (option == '1') {
             if (dynamic_cast<Item*>(this->objects[i])) {
+                drawRoomAndPlayerState(player);
                 cout << "是否選擇將" << this->objects[i]->getName() << "放入背包?" << endl;
                 cout << "1. 是" << endl;
                 cout << "2. 否" << endl;
@@ -85,6 +87,7 @@ void Room::encounterObjects(Player *player) {
                 }
             } 
             else if (dynamic_cast<GameCharacter*>(this->objects[i])) {
+                drawRoomAndPlayerState(player);
                 dynamic_cast<GameCharacter*>(this->objects[i])->triggerEvent(player);
                 if (static_cast<GameCharacter*>(this->objects[i])->checkIsDead()) {
                     this->objects.erase(this->objects.begin() + i);
@@ -94,7 +97,8 @@ void Room::encounterObjects(Player *player) {
         }
         if (option == '2') {
             cout << "你選擇退回上個房間。" << endl;
-
+            player->changeRoom(player->getPreviousRoom());
+            return true;
         }
         if (noMonster && option == '3') {
             cout << "你選擇移動至新的房間。" << endl;
@@ -102,6 +106,7 @@ void Room::encounterObjects(Player *player) {
         }
         if (i == this->objects.size()-1) cout << "你走到了房間的盡頭。" << endl;
     }
+    return false;
 }
 
 void Room::drawRoomAndPlayerState(Player *player) {
@@ -111,16 +116,16 @@ void Room::drawRoomAndPlayerState(Player *player) {
     if (player->getCurrentRoom()->getUpRoom()) {
         cout << "                   ↑                  " << endl;
         cout << "                                      " << endl;
-        cout << "    ███████████████ ███████████████   " <<  "  玩家: " << player->getName() << endl;
+        cout << "    ███████████████ ███████████████   " << endl;
     }
     else {
         cout << "                                      " << endl;
         cout << "                                      " << endl;
-        cout << "    ███████████████████████████████   " <<  "  玩家: " << player->getName() << endl;
+        cout << "    ███████████████████████████████   " << endl;
     }
-    cout << "    █                             █   " <<  "  血量: " << player->getCurrentHp() << "/" << player->getMaxHp() << endl;  
-    cout << "    █                             █   " <<  "  攻擊: " << player->getAtk() << endl;
-    cout << "    █                             █   " <<  "  防禦: " << player->getDef() << endl;
+    cout << "    █                             █   " << endl;  
+    cout << "    █                             █   " << endl;
+    cout << "    █                             █   " << endl;
     cout << "    █                             █   " << endl;
     cout << "    █                             █   " << endl;
     if (player->getCurrentRoom()->getLeftRoom() && player->getCurrentRoom()->getRightRoom())
@@ -177,7 +182,6 @@ void Room::showPlayerOptions(Player *player) {
         } else if (choice == '2') {
             player->detailedState();
             wait();
-            player->getCurrentRoom()->drawRoomAndPlayerState(player);
 
         } else if (choice == '3') {
             player->openBackpack();
@@ -217,6 +221,7 @@ void Room::showPlayerOptions(Player *player) {
             player->getCurrentRoom()->drawRoomAndPlayerState(player);
 
         } else if (choice == '4') {
+
             return;
         } else {
             cout << "你按下了" << choice << "，請選擇正確的選項!\n"; 
@@ -230,7 +235,7 @@ void Room::showPlayerOptions(Player *player) {
 }
 
 void Room::handlePlayerMovements(Player *player) {
-    
+    drawRoomAndPlayerState(player);
     if (!player->getCurrentRoom()->canPass()) {
         typewriter("提示: 這個房間裡有怪物，打倒怪物前，你只能往回走!\n");
         typewriter("你可以選擇...\n");

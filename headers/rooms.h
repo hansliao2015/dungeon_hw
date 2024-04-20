@@ -44,7 +44,7 @@ public:
     void addObject(Object *);
     virtual void roomAction(Player *player);
     bool canPass();
-    void encounterObjects(Player *player);
+    bool encounterObjects(Player *player);
     virtual void drawRoomAndPlayerState(Player *player);
     void showPlayerOptions(Player *player);
 };
