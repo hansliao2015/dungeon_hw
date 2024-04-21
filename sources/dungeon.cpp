@@ -39,24 +39,29 @@ void Dungeon::initPlayer() {
     player = new Player(name, 200, 20, 5, 100, 100, 100, 10);
 }
 
+void Dungeon::initPoisons() {
+    poisons.push_back(new Poison("毒蛇毒液", 5, 3));
+    poisons.push_back(new Poison("沼澤之毒", 10, 3));
+    poisons.push_back(new Poison("惡魔的微笑", 20, 3));
+}
+
 void Dungeon::initEquipments() {
-    equipments.push_back(new Equipment("鐵劍", 10, 10, 0, 0, 0, 0, 0));
-    equipments.push_back(new Equipment("鐵甲", 10, 0, 10, 0, 0, 0, 0));
-    equipments.push_back(new Equipment("鐵盾", 10, 0, 0, 10, 0, 0, 0));
-    equipments.push_back(new Equipment("鐵靴", 10, 0, 0, 0, 10, 0, 0));
-    equipments.push_back(new Equipment("鐵帽", 10, 0, 0, 0, 0, 10, 0));
+    equipments.push_back(new Equipment("逐闇者", 25, 5, 15, 0, 0, 0, 0));
+    equipments.push_back(new Equipment("祝福", 15, 30, 0, 0, 0, 0, 0));
+    equipments.push_back(new Equipment("王者之劍", 50, 0, 25, 10, 0, 0, 0));
 }
 
 void Dungeon::initFoods() {
     cout << ("正在初始化食物...\n");
-    foods.push_back(new Food("麵包", 5, 10, 10, 0, 5));
-    foods.push_back(new Food("蘋果", 3, 5, 5, 8, 3));
-    foods.push_back(new Food("肉湯", 10, 15, 15, 15, 15));
+    foods.push_back(new Food("能量飲料", 5, 0, 1, 2, 1));
+    foods.push_back(new Food("蘋果", 10, 5, 2, 2, 2));
+    foods.push_back(new Food("湯", 10, 0, 2, 1, 0));
 }
 
 void Dungeon::initAntidotes() {
     antidotes.push_back(new Antidote("牛奶", 10));
-    antidotes.push_back(new Antidote("藥水", 20));
+    antidotes.push_back(new Antidote("復魔藥水", 20));
+    antidotes.push_back(new Antidote("祝福藥水", 30));
 }
 
 void Dungeon::initNpcs() {
@@ -74,6 +79,17 @@ void Dungeon::initNpcs() {
     for (int i = 0; i < 4; i++) {
         npcs.push_back(new Npc(i, npcLines[i], npcNames[i], 30, 30+10*i%3, 10-i%3, 2+i%3));
     }
+    npcs[0]->addItem(foods[0]);
+    npcs[0]->addItem(equipments[0]);
+    npcs[0]->addItem(antidotes[0]);
+
+    npcs[1]->addItem(foods[1]);
+    npcs[1]->addItem(equipments[1]);
+    npcs[1]->addItem(antidotes[1]);
+
+    npcs[2]->addItem(foods[2]);
+    npcs[2]->addItem(equipments[2]);
+    npcs[2]->addItem(antidotes[2]);
 }
 
 void Dungeon::initMonsters() {
@@ -87,33 +103,33 @@ void Dungeon::initMonsters() {
 
 void Dungeon::initRooms() {
     cout << ("正在初始化房間...\n");
-    vector<Room*> rooms;
-    for (int i = 0; i <= 9; i++) {
-        if (i%3 == 0) {
-            rooms.push_back(new Room(i));
-        } else if (i%3 == 1) {
-            Forest *forest = new Forest(i);
-            forest->addObject(foods[1]);
-            forest->addObject(monsters[0]);
-            rooms.push_back(forest);
-
-        } else {
-            Desert *desert = new Desert(i);
-            desert->addObject(foods[0]);
-            desert->addObject(monsters[1]);
-            rooms.push_back(desert);
-        }
-    }
+    
+    // 尾數0, 3, 6, 9的房間為空房間
+    rooms.push_back(new Room(0)); // 起始房間
     room = rooms[0];
-    Forest *forest = new Forest(10);
-    forest->addObject(monsters[3]);
-    rooms[10] = forest;
+    rooms.push_back(new Forest(1));
+    rooms.push_back(new Desert(2));
+    rooms.push_back(new Room(3));
+    rooms.push_back(new Forest(4));
+    rooms.push_back(new Desert(5));
+    rooms.push_back(new Room(6));
+    rooms.push_back(new Forest(7));
+    rooms.push_back(new Desert(8));
+    rooms.push_back(new Room(9));
+    rooms.push_back(new Forest(10));
+    rooms[10]->addObject(monsters[3]);
     rooms[10]->setIsExit(true);
+
+    rooms[1]->addObject(foods[0]);
+    rooms[1]->addObject(monsters[0]);
     rooms[1]->addObject(npcs[0]);
     rooms[1]->addObject(antidotes[0]);
+    rooms[2]->addObject(foods[1]);
+    rooms[2]->addObject(monsters[1]);
     rooms[2]->addObject(npcs[1]);
     rooms[4]->addObject(npcs[2]);
     rooms[5]->addObject(npcs[3]);
+    rooms[5]->addObject(monsters[2]);
     /*
     Map:
           7-9-10

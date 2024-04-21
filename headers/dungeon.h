@@ -18,6 +18,7 @@ private:
     vector<Antidote *> antidotes;
     vector<Monster *> monsters;
     vector<Npc *> npcs;
+    void initPoisons();
     void initEquipments();
     void initFoods();
     void initAntidotes();
