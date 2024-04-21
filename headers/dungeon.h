@@ -18,6 +18,7 @@ private:
     vector<Antidote *> antidotes;
     vector<Monster *> monsters;
     vector<Npc *> npcs;
+    void initPoisons();
     void initEquipments();
     void initFoods();
     void initAntidotes();
@@ -33,9 +34,6 @@ public:
     bool isPlayerWin();
     bool isPlayerLose();
     void init();
-    void handleMovement();
-    void showOption();
     void printResult();
     void runGame();
-    void drawGameConsole();
 };

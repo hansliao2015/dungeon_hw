@@ -18,6 +18,7 @@ private:
     Room *rightRoom;
     bool isExit;
     vector<Object *> objects;
+    bool handlePlayerMovements(Player *player);
 public:
     Room(int);
 
@@ -30,7 +31,7 @@ public:
     bool getIsExit() const;
     int getIndex() const;
     vector<Object *> getObjects() const;
-    
+
     // 6 setter
     void setUpRoom(Room *);
     void setDownRoom(Room *);
@@ -43,7 +44,9 @@ public:
     void addObject(Object *);
     virtual void roomAction(Player *player);
     bool canPass();
-    void encounterObjects(Player *player);
+    bool encounterObjects(Player *player);
+    virtual void drawRoomAndPlayerState(Player *player);
+    bool showPlayerOptions(Player *player);
 };
 
 class Desert: public Room {

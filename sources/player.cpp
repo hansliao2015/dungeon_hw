@@ -32,15 +32,7 @@ void Player::retreat() {
 }
 
 void Player::briefState() {
-    string n = (
-        "玩家: " + getName() + "\n"
-        "血量: " + to_string(getCurrentHp()) + "/" + to_string(getMaxHp()) + "\n"
-        "攻擊: " + to_string(getAtk()) + "\n"
-        "防禦: " + to_string(getDef()) + "\n"
-    );
-    if (equippedItem) n += "裝備: " + equippedItem->getName() + "\n";
-    else n += "裝備: 無\n";
-    typewriter(n);
+    detailedState();
 }
 
 void Player::detailedState() {
@@ -53,6 +45,7 @@ void Player::detailedState() {
         "飽足: " + to_string(fullness) + "\n"
         "滋潤: " + to_string(moisture) + "\n"
         "精神: " + to_string(vitality) + "\n"
+        "金錢: " + to_string(money) + "\n"
     );
     if (infectedPoison) n += "負面狀態--中毒: " + infectedPoison->getName() + "\n";
     else {
@@ -66,9 +59,13 @@ void Player::detailedState() {
         n += "\n";
     }
     n += "背包內物品: " ;
-    for (int i = 0; i < backpack.size(); i++) {
-        n += backpack[i]->getName() + " ";
+    if (backpack.size() == 0) n += "無\n";
+    else {
+        for (int i = 0; i < backpack.size(); i++) {
+            n += backpack[i]->getName() + " ";
+        }
     }
+    typewriter(n);
 }
 
 void Player::equip(Equipment *equipment) {
@@ -98,7 +95,7 @@ void Player::setPreviousRoom(Room *room) { previousRoom = room; }
 
 void Player::setInfectedPoison(Poison *poison) { infectedPoison = poison; }
 
-void Player::updateTransitionState() {
+void Player::updatePosionDamage() {
     if (infectedPoison) {
         if (infectedPoison->getDuration() == 0) {
             infectedPoison = nullptr;
@@ -111,23 +108,22 @@ void Player::updateTransitionState() {
 }
 
 
-void Player::launchBattle(GameCharacter *enemy) {
+bool Player::launchBattle(GameCharacter *enemy) {
+    typewriter("輸入q以離開戰鬥\n");
+    typewriter("輸入a以攻擊\n");
     while (true) {
-        typewriter("輸入q以離開戰鬥\n");
-        typewriter("輸入a以攻擊\n");
         char choice = input();
         if (choice == 'q') {
             retreat();
-            break;
+            return true;
         } else if (choice == 'a') {
-            typewriter("你對" + enemy->getName() + "發動了攻擊\n");
         } else {
             typewriter("無效的選擇\n");
             continue;
         }
         enemy->takeDamage(atk);
-        typewriter("你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n");
-        typewriter(enemy->getName() + "剩餘HP: " + to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n");
+        cout << "你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n";
+        cout << enemy->getName() + "剩餘HP: " + to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n";
 
         if (enemy->checkIsDead()) {
             typewriter("你贏了!\n");
@@ -139,20 +135,23 @@ void Player::launchBattle(GameCharacter *enemy) {
                     typewriter("你獲得了" + dynamic_cast<Monster*>(enemy)->getDropItem()->getName() + "，已放入背包。\n");
                 }
             }
-            break;
+            wait();
+            return false;
         }
         takeDamage(enemy->getAtk());
         typewriter("你剩餘HP: " + to_string(currentHp) + "/" + to_string(maxHp) + "\n");
         typewriter(enemy->getName() + "對你造成了" + to_string(enemy->getAtk() - def) + "點傷害\n");
         if (currentHp <= 0) {
             typewriter("你死了!\n");
-            break;
+            wait();
+            return true;
         }
     }
+    return false;
 }
 
-void Player::triggerEvent(GameCharacter* gameCharacter) {
-    launchBattle(gameCharacter);
+bool Player::triggerEvent(GameCharacter* gameCharacter) {
+    return launchBattle(gameCharacter);
 }
 
 void Player::updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int vitalityDamage) {

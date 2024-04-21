@@ -4,7 +4,6 @@ Monster::Monster(string _name, int _money, int _maxHp, int _atk, int _def): Game
 
 Item* Monster::getDropItem() const { return dropItem; }
 
-void Monster::triggerEvent(GameCharacter* gameCharacter) {
-    dynamic_cast<Player*>(gameCharacter)->launchBattle(this);
-
+bool Monster::triggerEvent(GameCharacter* gameCharacter) {
+    return dynamic_cast<Player*>(gameCharacter)->triggerEvent(this);
 }
