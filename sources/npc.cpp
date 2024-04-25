@@ -18,18 +18,20 @@ bool Npc::triggerEvent(GameCharacter* gameCharacter) {
     cout << getName() << "和你開啟了對話" << endl;
     cout << getName() << ": " << "你好冒險者，想要和我交易嗎?" << endl;
     cout << "Option1: 交易, Option2: 默默離開, Option3: 開啟戰鬥" << endl;
-    cout << "請選擇你的選項:\n>> " << endl;
-    int choice;
-    cin >> choice;
-    if (choice == 1) {
+    cout << "請選擇你的選項:\n>> ";
+    char choice = input();
+    if (choice == '1') {
         trade(gameCharacter);
         return false;
-    } else if (choice == 2) {
+    } else if (choice == '2') {
         cout << getName() << ": 歡迎下次光臨" << endl;
         return false;
-    } else if (choice == 3) {
+    } else if (choice == '3') {
         Player *player = dynamic_cast<Player*>(gameCharacter);
         if (player->triggerEvent(this)) return true;
+    } else {
+        cout << "無效的選擇!" << endl;
+        triggerEvent(gameCharacter);
     }
     return false;
 
@@ -44,19 +46,30 @@ void Npc::speak() {
 }
 
 void Npc::trade(GameCharacter* gameCharacter) {
+    Player *player1 = dynamic_cast<Player*>(gameCharacter);
+    player1->getCurrentRoom()->drawRoomAndPlayerState(player1);
+    if (items.size() == 0) {
+        cout << getName() << "的商品賣完了!" << endl;
+        return;
+    }
     Player *player = dynamic_cast<Player*>(gameCharacter);
     cout << "商品:" << endl;
+    string itemsStr = "";
     for (int i = 0; i < items.size(); i++) {
-        cout << i+1 << ". " << items[i]->getName() << " " << items[i]->getMoney() << "元" << endl;
+        itemsStr += to_string(i+1) + ". " + items[i]->getName() + ": " + to_string(items[i]->getMoney()) + "元\n";
     }
-    cout << "請選擇你要的商品" << endl;
-    int choice;
-    cin >> choice;
-    if (player->getMoney() > items[choice]->getMoney()) {
-        player->setMoney(player->getMoney() - items[choice]->getMoney());
-        player->addItem(items[choice-1]);
-        cout << "交易成功，你花了" << items[choice]->getMoney() << "元" << endl;
-        cout << "看在買東西的份上，" << getName() << "好心的告訴你一些線索。" << endl;
+    typewriter(itemsStr);
+    cout << "請選擇你要的商品:\n>> ";
+    char choice = input();
+    if (choice < '1' || choice > items.size() + '0') {
+        cout << "無效的選擇!" << endl;
+        trade(gameCharacter);
+    }
+    if (player->getMoney() > items[(choice-'0')-1]->getMoney()) {
+        player->setMoney(player->getMoney() - items[(choice-'0')-1]->getMoney());
+        player->addItem(items[(choice-'0')-1]);
+        cout << "交易成功，你花了" << items[(choice-'0')-1]->getMoney() << "元" << endl;
+        typewriter("看在買東西的份上，" + getName() + "好心的告訴你一些線索。" + '\n');
         speak();
     } else {
         cout << "你的錢不夠，" << getName() << "不想和你交易了。" << endl;

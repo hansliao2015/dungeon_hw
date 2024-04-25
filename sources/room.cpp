@@ -54,7 +54,7 @@ bool Room::encounterObjects(Player *player) {
         if (player->checkIsDead())  {
             cout << "你已經死亡，無法繼續遊戲。" << endl;
             wait();
-            // return true;
+            return true;
         }
         if (this->objects.size() == 0) {
             cout << "這個房間裡已經沒有任何東西了!" << endl;
@@ -64,8 +64,8 @@ bool Room::encounterObjects(Player *player) {
         for (int i = 0; i < this->objects.size(); i++) {
             drawRoomAndPlayerState(player);
             cout << "目前房間物件數量: " << this->objects.size() << endl;
-            cout << "玩家移動中…" << endl;
-            cout << "前方出現了" << this->objects[i]->getTag() << endl;
+            typewriter("玩家移動中...\n");
+            typewriter("前方出現了" + this->objects[i]->getTag() + "\n\n");
             cout << "你可以選擇:" << endl;
             cout << "1. 繼續向前" << endl;
             cout << "2. 退回上個房間" << endl;
@@ -75,7 +75,6 @@ bool Room::encounterObjects(Player *player) {
 
             if (noMonster) {
                 cout << "3. 移動至新的房間" << endl;
-                //return true;
             }
             char option = input();
             if (option == '1') {
@@ -90,6 +89,11 @@ bool Room::encounterObjects(Player *player) {
                         cout << "你獲得了" << this->objects[i]->getName() << "，已放入背包。" << endl;
                         this->objects.erase(this->objects.begin() + i);
                         --i;
+                        if (i == this->objects.size()-1) {
+                            typewriter("你走到了房間的盡頭。\n");
+                            wait();
+                            return false;
+                        }
                         continue;
                     } else if (option == '2') {
                         cout << "你選擇忽略" << this->objects[i]->getName() << "。" << endl;
@@ -103,10 +107,17 @@ bool Room::encounterObjects(Player *player) {
                 } 
                 else if (dynamic_cast<GameCharacter*>(this->objects[i])) {
                     drawRoomAndPlayerState(player);
-                    dynamic_cast<GameCharacter*>(this->objects[i])->triggerEvent(player);
+                    if (dynamic_cast<GameCharacter*>(this->objects[i])->triggerEvent(player)) {
+                        return true;
+                    }
                     if (static_cast<GameCharacter*>(this->objects[i])->checkIsDead()) {
                         this->objects.erase(this->objects.begin() + i);
                         --i;
+                        if (i == this->objects.size()-1) {
+                            typewriter("你走到了房間的盡頭。\n");
+                            wait();
+                           return false;
+                        }
                         continue;
                     }
                 }
@@ -125,10 +136,6 @@ bool Room::encounterObjects(Player *player) {
                 cout << "無效的選擇" << endl;
                 wait();
                 continue;
-            }
-            if (i == this->objects.size()-1) {
-                cout << "你走到了房間的盡頭。" << endl;
-                return false;
             }
         }
     }
@@ -195,7 +202,7 @@ bool Room::showPlayerOptions(Player *player) {
                 "你可以選擇...\n"
                 "1. 查看狀態\n"
                 "2. 打開背包\n"
-                "3. 進入新的房間\n>> "
+                "3. 進入其他房間\n>> "
             );
             typewriter(n);
             char choice;
@@ -220,16 +227,15 @@ bool Room::showPlayerOptions(Player *player) {
         else if (player->getCurrentRoom()->tag == "森林" || player->getCurrentRoom()->tag == "沙漠") {
             n = (
                 "你可以選擇...\n"
-                "1. 探索房間\n"
+                "1. 探索這個房間\n"
                 "2. 查看狀態\n"
                 "3. 打開背包\n"
-                "4. 進入新的房間\n>> "
+                "4. 進入其他房間\n>> "
             );
             typewriter(n);
             char choice;
             choice = input();
             if (choice == '1') {
-                // debug: continue to ask player to choose options
                 return false;
 
             } else if (choice == '2') {

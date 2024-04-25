@@ -1,5 +1,6 @@
 #include "../headers/gameCharacters.h"
 #include "../headers/utils.h"
+#include "../headers/rooms.h"
 
 Player::Player(string _name, int _maxHp, int _atk, int _def, int _Fullness, int _Moisture, int _Vitality, int _money): GameCharacter(_name, _money, _maxHp, _atk, _def), fullness(_Fullness), moisture(_Moisture), vitality(_Vitality) {
     currentRoom = nullptr;
@@ -36,12 +37,25 @@ void Player::briefState() {
 }
 
 void Player::detailedState() {
-
+    getCurrentRoom()->drawRoomAndPlayerState(this);
     string n = (
         "玩家: " + getName() + "\n"
-        "血量: " + to_string(getCurrentHp()) + "/" + to_string(getMaxHp()) + "\n"
-        "攻擊: " + to_string(getAtk()) + "\n"
-        "防禦: " + to_string(getDef()) + "\n"
+    );
+    
+    if (equippedItem) {
+        n += (
+            "血量: " + to_string(getCurrentHp()) + "/" + to_string(getMaxHp()) + "(" + equippedItem->getName() + "+" + to_string(equippedItem->getAddHp()) + ")\n"
+            "攻擊: " + to_string(getAtk()) + "(" + equippedItem->getName() + "+" + to_string(equippedItem->getAddAtk()) + ")\n"
+            "防禦: " + to_string(getDef()) + "(" + equippedItem->getName() + "+" + to_string(equippedItem->getAddDef()) + ")\n"
+        );
+    } else {
+        n += (
+            "血量: " + to_string(getCurrentHp()) + "/" + to_string(getMaxHp()) + "\n"
+            "攻擊: " + to_string(getAtk()) + "\n"
+            "防禦: " + to_string(getDef()) + "\n"
+        );
+    }
+    n += (
         "飽足: " + to_string(fullness) + "\n"
         "滋潤: " + to_string(moisture) + "\n"
         "精神: " + to_string(vitality) + "\n"
@@ -64,24 +78,30 @@ void Player::detailedState() {
         for (int i = 0; i < backpack.size(); i++) {
             n += backpack[i]->getName() + " ";
         }
+        n += "\n";
     }
     typewriter(n);
 }
 
 void Player::equip(Equipment *equipment) {
     cout << "你裝備了" << equipment->getName() << endl;
+    maxHp += equipment->getAddHp();
+    currentHp += equipment->getAddHp();
+    atk += equipment->getAddAtk();
+    def += equipment->getAddDef();
     equippedItem = equipment;
-    briefState();
 }
 
 void Player::eat(Food *food) {
     cout << "你吃了" << food->getName() << endl;
     currentHp += food->getAddHp();
-    if (currentHp > maxHp) currentHp = maxHp;
     fullness += food->getAddFullness();
     moisture += food->getAddMoisture();
     vitality += food->getAddVitality();
-    briefState();
+    if (currentHp > maxHp) currentHp = maxHp;
+    if (fullness > 10) fullness = 10;
+    if (moisture > 10) moisture = 10;
+    if (vitality > 10) vitality = 10;
 }
 
 void Player::useAntidote(Antidote *antidote) {
@@ -109,12 +129,15 @@ void Player::updatePosionDamage() {
 
 
 bool Player::launchBattle(GameCharacter *enemy) {
-    typewriter("輸入q以離開戰鬥\n");
-    typewriter("輸入a以攻擊\n");
     while (true) {
+        getCurrentRoom()->drawRoomAndPlayerState(this);
+        typewriter("輸入q以離開戰鬥\n");
+        typewriter("輸入a以攻擊\n");
+        cout << "----------------\n";
         char choice = input();
         if (choice == 'q') {
             retreat();
+            getCurrentRoom()->roomAction(this);
             return true;
         } else if (choice == 'a') {
         } else {
@@ -122,8 +145,10 @@ bool Player::launchBattle(GameCharacter *enemy) {
             continue;
         }
         enemy->takeDamage(atk);
-        cout << "你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n";
-        cout << enemy->getName() + "剩餘HP: " + to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n";
+        cout << enemy->getName() + ": -" + to_string(atk - enemy->getDef()) + "\n";
+        cout << to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n";
+        cout << "----------------\n";
+
 
         if (enemy->checkIsDead()) {
             typewriter("你贏了!\n");
@@ -139,8 +164,12 @@ bool Player::launchBattle(GameCharacter *enemy) {
             return false;
         }
         takeDamage(enemy->getAtk());
-        typewriter("你剩餘HP: " + to_string(currentHp) + "/" + to_string(maxHp) + "\n");
-        typewriter(enemy->getName() + "對你造成了" + to_string(enemy->getAtk() - def) + "點傷害\n");
+
+        cout << "你: -" + to_string(enemy->getAtk() - def) + "\n";
+        cout << to_string(getCurrentHp()) + "/" + to_string(getMaxHp()) + "\n";
+        cout << "----------------\n";
+
+        wait();
         if (currentHp <= 0) {
             typewriter("你死了!\n");
             wait();
@@ -172,14 +201,18 @@ void Player::openBackpack() {
     for (int i = 0; i < backpack.size(); i++) {
         typewriter(to_string(i + 1) + ". " + backpack[i]->getName() + "\n");
     }
-    cout << ("選擇要使用的物品: ");
-    int choice;
-    cin >> choice;
-    if (choice < 1 || choice > backpack.size()) {
+    cout << ("選擇要使用的物品: \n");
+    cout << ("輸入q以離開背包\n");
+    char choice = input();
+    if (choice == 'q') {
+        return;
+    } else if (choice < '1' || choice > backpack.size() + '0') {
         typewriter("無效的選擇\n");
         return;
+    } else {
+        backpack[(choice - '0') - 1]->use(this);
+        backpack.erase(backpack.begin() + (choice -'0') - 1);
+        wait();
     }
-    backpack[choice - 1]->use(this);
-    backpack.erase(backpack.begin() + choice - 1);
     briefState();
 }

@@ -36,7 +36,7 @@ void Dungeon::initPlayer() {
     cout << ("請問你的名字是?\n");
     string name;
     cin >> name;
-    player = new Player(name, 200, 20, 5, 100, 100, 100, 10);
+    player = new Player(name, 200, 20, 5, 10, 10, 10, 10);
 }
 
 void Dungeon::initPoisons() {
@@ -94,9 +94,9 @@ void Dungeon::initNpcs() {
 
 void Dungeon::initMonsters() {
     cout << ("正在初始化怪物...\n");
-    monsters.push_back(new Monster("蛇", 30, 30, 5, 5));
-    monsters.push_back(new Monster("蠍子", 25, 30, 10, 5));
-    monsters.push_back(new Monster("狼", 100, 50, 15, 10));
+    monsters.push_back(new Monster("蛇", 30, 30, 10, 5));
+    monsters.push_back(new Monster("蠍子", 25, 30, 15, 5));
+    monsters.push_back(new Monster("狼", 100, 50, 25, 10));
     monsters.push_back(new Monster("森林之王", 150, 100, 15, 10));
 }
 
