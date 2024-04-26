@@ -19,6 +19,4 @@ void Desert::roomAction(Player *player) {
         wait();
         return;
     }
-    bool isChangingRoom2 = showPlayerOptions(player);
-    if (isChangingRoom2) return;
 }

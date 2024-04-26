@@ -129,26 +129,21 @@ void Player::updatePosionDamage() {
 
 
 bool Player::launchBattle(GameCharacter *enemy) {
+    typewriter("輸入1以攻擊\n");
+    typewriter("輸入2以離開戰鬥\n");
     while (true) {
-        getCurrentRoom()->drawRoomAndPlayerState(this);
-        typewriter("輸入q以離開戰鬥\n");
-        typewriter("輸入a以攻擊\n");
-        cout << "----------------\n";
         char choice = input();
-        if (choice == 'q') {
+        if (choice == '2') {
             retreat();
-            getCurrentRoom()->roomAction(this);
             return true;
-        } else if (choice == 'a') {
+        } else if (choice == '1') {
         } else {
             typewriter("無效的選擇\n");
             continue;
         }
         enemy->takeDamage(atk);
-        cout << enemy->getName() + ": -" + to_string(atk - enemy->getDef()) + "\n";
-        cout << to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n";
-        cout << "----------------\n";
-
+        cout << "你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n";
+        cout << enemy->getName() + "剩餘HP: " + to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n";
 
         if (enemy->checkIsDead()) {
             typewriter("你贏了!\n");
@@ -164,12 +159,8 @@ bool Player::launchBattle(GameCharacter *enemy) {
             return false;
         }
         takeDamage(enemy->getAtk());
-
-        cout << "你: -" + to_string(enemy->getAtk() - def) + "\n";
-        cout << to_string(getCurrentHp()) + "/" + to_string(getMaxHp()) + "\n";
-        cout << "----------------\n";
-
-        wait();
+        typewriter("你剩餘HP: " + to_string(currentHp) + "/" + to_string(maxHp) + "\n");
+        typewriter(enemy->getName() + "對你造成了" + to_string(enemy->getAtk() - def) + "點傷害\n");
         if (currentHp <= 0) {
             typewriter("你死了!\n");
             wait();

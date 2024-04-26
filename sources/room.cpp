@@ -92,6 +92,7 @@ bool Room::encounterObjects(Player *player) {
                         if (i == this->objects.size()-1) {
                             typewriter("你走到了房間的盡頭。\n");
                             wait();
+                            showPlayerOptions(player);
                             return false;
                         }
                         continue;
@@ -116,7 +117,8 @@ bool Room::encounterObjects(Player *player) {
                         if (i == this->objects.size()-1) {
                             typewriter("你走到了房間的盡頭。\n");
                             wait();
-                           return false;
+                            showPlayerOptions(player);
+                            return false;
                         }
                         continue;
                     }
