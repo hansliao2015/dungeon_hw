@@ -83,9 +83,11 @@ public:
 class Monster: public GameCharacter {
 private:
     Item *dropItem;
+    Poison *monsterPoison;
 public:
-    Monster(string _name, int _money, int _maxHp, int _atk, int _def);
+    Monster(string _name, int _money, int _maxHp, int _atk, int _def, Item *dropItem, Poison *monsterPoison);
     Item* getDropItem() const;
+    Poison* getMonsterPoison() const;
     bool triggerEvent(GameCharacter* gameCharacter) override;
 };
 

@@ -1,5 +1,6 @@
 #include "../headers/dungeon.h"
 #include "../headers/utils.h"
+#include "../headers/poison.h"
 
 Dungeon::Dungeon() {}
 
@@ -21,6 +22,7 @@ void Dungeon::init() {
     clear();
     cout << ("遊戲初始化中...\n");
     initFoods();
+    initPoisons();
     initEquipments();
     initAntidotes();
     initNpcs();
@@ -43,6 +45,8 @@ void Dungeon::initPoisons() {
     poisons.push_back(new Poison("毒蛇毒液", 5, 3));
     poisons.push_back(new Poison("沼澤之毒", 10, 3));
     poisons.push_back(new Poison("惡魔的微笑", 20, 3));
+    poisons.push_back(new Poison("魔王之毒", 30, 3));
+    poisons.push_back(new Poison("蠍子之毒", 1, 10));
 }
 
 void Dungeon::initEquipments() {
@@ -94,10 +98,10 @@ void Dungeon::initNpcs() {
 
 void Dungeon::initMonsters() {
     cout << ("正在初始化怪物...\n");
-    monsters.push_back(new Monster("蛇", 30, 30, 10, 5));
-    monsters.push_back(new Monster("蠍子", 25, 30, 15, 5));
-    monsters.push_back(new Monster("狼", 100, 50, 25, 10));
-    monsters.push_back(new Monster("森林之王", 150, 100, 15, 10));
+    monsters.push_back(new Monster("蛇", 30, 30, 10, 5, foods[1], poisons[0]));
+    monsters.push_back(new Monster("蠍子", 25, 30, 15, 5, antidotes[1], poisons[4]));
+    monsters.push_back(new Monster("狼", 100, 50, 25, 10, nullptr, nullptr));
+    monsters.push_back(new Monster("森林之王", 150, 100, 15, 10, nullptr, poisons[3]));
 }
 
 

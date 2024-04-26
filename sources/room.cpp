@@ -65,6 +65,7 @@ bool Room::encounterObjects(Player *player) {
             drawRoomAndPlayerState(player);
             cout << "目前房間物件數量: " << this->objects.size() << endl;
             typewriter("玩家移動中...\n");
+            player->updatePosionDamage();
             typewriter("前方出現了" + this->objects[i]->getTag() + "\n\n");
             cout << "你可以選擇:" << endl;
             cout << "1. 繼續向前" << endl;
