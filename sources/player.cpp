@@ -61,7 +61,7 @@ void Player::detailedState() {
         "精神: " + to_string(vitality) + "\n"
         "金錢: " + to_string(money) + "\n"
     );
-    if (infectedPoison) n += "負面狀態--中毒: " + infectedPoison->getName() + "\n";
+    if (infectedPoison) n += "負面狀態--中毒: " + infectedPoison->getName() + "，剩下" + to_string(infectedPoison->getDuration()) + "回合\n";
     else {
         n += "負面狀態: 無";
         n += "\n";
@@ -164,6 +164,11 @@ bool Player::launchBattle(GameCharacter *enemy) {
                     typewriter("你獲得了" + dynamic_cast<Monster*>(enemy)->getDropItem()->getName() + "，已放入背包。\n");
                 }
             }
+            if (getCurrentRoom()->getIsExit() && getCurrentRoom()->canPass()) {
+                typewriter("你找到了出口的房間，離開了dungeon\n");
+                wait();
+                return true;
+            }
             wait();
             return false;
         }
@@ -218,6 +223,7 @@ void Player::openBackpack() {
         backpack[(choice - '0') - 1]->use(this);
         backpack.erase(backpack.begin() + (choice -'0') - 1);
         wait();
+        openBackpack();
     }
     briefState();
 }
