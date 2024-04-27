@@ -93,6 +93,7 @@ void Player::equip(Equipment *equipment) {
 }
 
 void Player::eat(Food *food) {
+    getCurrentRoom()->drawRoomAndPlayerState(this);
     cout << "你吃了" << food->getName() << endl;
     currentHp += food->getAddHp();
     fullness += food->getAddFullness();
@@ -102,6 +103,11 @@ void Player::eat(Food *food) {
     if (fullness > 10) fullness = 10;
     if (moisture > 10) moisture = 10;
     if (vitality > 10) vitality = 10;
+    typewriter("你的狀態提升了!\n");
+    typewriter("血量:" + to_string(currentHp) + "/" + to_string(maxHp) + " (+" + to_string(food->getAddHp()) + ")\n");
+    typewriter("飽足:" + to_string(fullness) + "/" + to_string(10) + " (+" + to_string(food->getAddFullness()) + ")\n");
+    typewriter("滋潤:" + to_string(moisture) + "/" + to_string(10) + " (+" + to_string(food->getAddMoisture()) + ")\n");
+    typewriter("精神:" + to_string(vitality) + "/" + to_string(10) + " (+" + to_string(food->getAddVitality()) + ")\n");
 }
 
 void Player::useAntidote(Antidote *antidote) {

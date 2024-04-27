@@ -57,9 +57,9 @@ void Dungeon::initEquipments() {
 
 void Dungeon::initFoods() {
     cout << ("正在初始化食物...\n");
-    foods.push_back(new Food("能量飲料", 5, 0, 1, 2, 1));
-    foods.push_back(new Food("蘋果", 10, 5, 2, 2, 2));
-    foods.push_back(new Food("湯", 10, 0, 2, 1, 0));
+    foods.push_back(new Food("能量飲料", 5, 10, 1, 2, 1));
+    foods.push_back(new Food("蘋果", 10, 15, 2, 2, 2));
+    foods.push_back(new Food("湯", 10, 20, 2, 1, 0));
 }
 
 void Dungeon::initAntidotes() {
