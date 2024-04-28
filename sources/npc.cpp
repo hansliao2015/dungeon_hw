@@ -3,18 +3,9 @@
 
 Npc::Npc(int _index, string _line, string _name, int _money, int _maxHp, int _atk, int _def): index(_index), line(_line), items(), GameCharacter(_name, "Npc", _money, _maxHp, _atk, _def) {}
 
-
-/*
-`void triggerEvent(GameCharacter) override {`
-	`cout << name << "和你開啟了對話";`
-	`cout << name << ": " << "你好冒險者，想要和我交易嗎?"`
-	`cout << "Option1: trade(交易), Option2: 默默離開, Option3: 開啟戰鬥"`
-	`if (交易) trade()`
-	`if (默默離開) print "歡迎下次光臨"`
-	`if (開啟戰鬥) dynamic_cast<Player*>->triggerEvent(this)`
-`}`
-*/
 bool Npc::triggerEvent(GameCharacter* gameCharacter) {
+    Player *player = dynamic_cast<Player*>(gameCharacter);
+    player->getCurrentRoom()->drawRoomAndPlayerState(player);
     cout << getName() << "和你開啟了對話" << endl;
     typewriter(getName() + ": " + "你好冒險者，想要和我交易嗎?\n");
     typewriter(
@@ -81,7 +72,9 @@ void Npc::trade(GameCharacter* gameCharacter) {
         cout << "交易成功，你花了" << items[index - 1]->getMoney() << "元" << endl;
         typewriter("看在買東西的份上，" + getName() + "好心的告訴你一些線索。" + '\n');
         speak();
+        trade(gameCharacter);
     } else {
-        cout << "你的錢不夠，" << getName() << "不想和你交易了。" << endl;
+        cout << "你的金錢不足!";
+        wait();
     }
 }

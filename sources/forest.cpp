@@ -15,8 +15,6 @@ void Forest::roomAction(Player *player) {
     bool isLeaving = encounterObjects(player);
     if (isLeaving) return;
     if (getIsExit() && canPass()) {
-        cout << "你找到了出口的房間，離開了dungeon" << endl;
-        wait();
         return;
     }
 }

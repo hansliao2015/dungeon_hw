@@ -60,3 +60,9 @@ public:
     Forest(int);
     void roomAction(Player *player) override;
 };
+
+class Swamp: public Room {
+public:
+    Swamp(int);
+    void roomAction(Player *player) override;
+};

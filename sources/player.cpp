@@ -61,7 +61,7 @@ void Player::detailedState() {
         "精神: " + to_string(vitality) + "\n"
         "金錢: " + to_string(money) + "\n"
     );
-    if (infectedPoison) n += "負面狀態--中毒: " + infectedPoison->getName() + "\n";
+    if (infectedPoison) n += "負面狀態--中毒: " + infectedPoison->getName() + "，剩下" + to_string(infectedPoison->getDuration()) + "回合\n";
     else {
         n += "負面狀態: 無";
         n += "\n";
@@ -129,17 +129,18 @@ void Player::updatePosionDamage() {
         }
         currentHp -= infectedPoison->getDamage();
         infectedPoison->decreaseDuration();
-        typewriter("受到毒的影響，你的體力下降，hp減少" + to_string(infectedPoison->getDamage()) + "\n");
-        if (infectedPoison->getDuration() == 0) typewriter("你解除了中毒狀態\n");
-        else typewriter("毒的持續效果還有" + to_string(infectedPoison->getDuration()) + "回合\n");
+        blue("受到毒的影響，你的體力下降，hp減少" + to_string(infectedPoison->getDamage()) + "\n");
+        if (infectedPoison->getDuration() == 0) blue("你解除了中毒狀態\n");
+        else blue("毒的持續效果還有" + to_string(infectedPoison->getDuration()) + "回合\n");
     }
     isRetreat = false;
 }
 
 
 bool Player::launchBattle(GameCharacter *enemy) {
+    getCurrentRoom()->drawRoomAndPlayerState(this);
     typewriter("輸入1以攻擊\n");
-    typewriter("輸入2以離開戰鬥\n");
+    typewriter("輸入2以離開戰鬥\n>> ");
     while (true) {
         char choice = input();
         if (choice == '2') {
@@ -151,8 +152,8 @@ bool Player::launchBattle(GameCharacter *enemy) {
             continue;
         }
         enemy->takeDamage(atk);
-        cout << "你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n";
-        cout << enemy->getName() + "剩餘HP: " + to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n";
+        red("你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n");
+        red(enemy->getName() + "剩餘HP: " + to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n");
 
         if (enemy->checkIsDead()) {
             typewriter("你贏了!\n");
@@ -164,6 +165,11 @@ bool Player::launchBattle(GameCharacter *enemy) {
                     typewriter("你獲得了" + dynamic_cast<Monster*>(enemy)->getDropItem()->getName() + "，已放入背包。\n");
                 }
             }
+            if (getCurrentRoom()->getIsExit() && getCurrentRoom()->canPass()) {
+                typewriter("你找到了出口的房間，離開了dungeon\n");
+                wait();
+                return true;
+            }
             wait();
             return false;
         }
@@ -173,10 +179,10 @@ bool Player::launchBattle(GameCharacter *enemy) {
             typewriter(enemy->getName() + "的攻擊附帶了" + dynamic_cast<Monster*>(enemy)->getMonsterPoison()->getName() + "，你受到了中毒的負面狀態!\n");
         }
         updatePosionDamage();
-        typewriter(enemy->getName() + "對你造成了" + to_string(enemy->getAtk() - def) + "點傷害\n");
-        typewriter("你剩餘HP: " + to_string(currentHp) + "/" + to_string(maxHp) + "\n");
+        red(enemy->getName() + "對你造成了" + to_string(enemy->getAtk() - def) + "點傷害\n");
+        red("你剩餘HP: " + to_string(currentHp) + "/" + to_string(maxHp) + "\n");
         if (currentHp <= 0) {
-            typewriter("你死了!\n");
+            red("你死了!\n");
             wait();
             return true;
         }
@@ -198,26 +204,31 @@ void Player::updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int
 }
 
 void Player::openBackpack() {
+    getCurrentRoom()->drawRoomAndPlayerState(this);
     if (backpack.size() == 0) {
-        cout << ("背包內沒有物品\n");
+        typewriter("背包內沒有物品\n");
         return;
     }
     cout << ("背包內物品: \n");
     for (int i = 0; i < backpack.size(); i++) {
         typewriter(to_string(i + 1) + ". " + backpack[i]->getName() + "\n");
     }
-    cout << ("選擇要使用的物品: \n");
-    cout << ("輸入q以離開背包\n");
+    cout << ("提示:輸入q以離開背包\n");
+    typewriter("選擇要使用的物品: \n");
     char choice = input();
     if (choice == 'q') {
         return;
     } else if (choice < '1' || choice > backpack.size() + '0') {
         typewriter("無效的選擇\n");
+        wait();
+        openBackpack();
         return;
     } else {
         backpack[(choice - '0') - 1]->use(this);
         backpack.erase(backpack.begin() + (choice -'0') - 1);
         wait();
+        openBackpack();
+        return;
     }
     briefState();
 }

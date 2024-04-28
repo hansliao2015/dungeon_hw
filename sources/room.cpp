@@ -37,14 +37,12 @@ void Room::roomAction(Player *player) {
 }
 
 bool Room::canPass() {
-    bool canPass = true;
     for (auto object: this->objects) {
         if (object->getTag() == "Monster") {
-            canPass = false;
-            break;
+            return false;
         }
     }
-    return canPass;
+    return true;
 }
 
 //Room不會用到encounterObjects()
@@ -115,6 +113,9 @@ bool Room::encounterObjects(Player *player) {
                     if (static_cast<GameCharacter*>(this->objects[i])->checkIsDead()) {
                         this->objects.erase(this->objects.begin() + i);
                         --i;
+                        if (player->getCurrentRoom()->getIsExit() && player->getCurrentRoom()->canPass()) {
+                            return false;
+                        }
                         if (i == this->objects.size()-1) {
                             typewriter("你走到了房間的盡頭。\n");
                             wait();
@@ -122,6 +123,12 @@ bool Room::encounterObjects(Player *player) {
                             return false;
                         }
                         continue;
+                    }
+                    if (dynamic_cast<Npc*>(this->objects[i])) {
+                        cout << this->objects[i]->getName() << "離開了\n";
+                        wait();
+                        this->objects.erase(this->objects.begin() + i);
+                        --i;
                     }
                 }
             }
@@ -227,7 +234,7 @@ bool Room::showPlayerOptions(Player *player) {
                 continue;
             }
         }
-        else if (player->getCurrentRoom()->tag == "森林" || player->getCurrentRoom()->tag == "沙漠") {
+        else if (player->getCurrentRoom()->tag == "森林" || player->getCurrentRoom()->tag == "沙漠" || player->getCurrentRoom()->tag == "沼澤") {
             n = (
                 "你可以選擇...\n"
                 "1. 探索這個房間\n"
