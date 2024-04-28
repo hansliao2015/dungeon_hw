@@ -138,8 +138,9 @@ void Player::updatePosionDamage() {
 
 
 bool Player::launchBattle(GameCharacter *enemy) {
+    getCurrentRoom()->drawRoomAndPlayerState(this);
     typewriter("輸入1以攻擊\n");
-    typewriter("輸入2以離開戰鬥\n");
+    typewriter("輸入2以離開戰鬥\n>> ");
     while (true) {
         char choice = input();
         if (choice == '2') {
@@ -203,6 +204,7 @@ void Player::updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int
 }
 
 void Player::openBackpack() {
+    getCurrentRoom()->drawRoomAndPlayerState(this);
     if (backpack.size() == 0) {
         cout << ("背包內沒有物品\n");
         return;

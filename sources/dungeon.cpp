@@ -45,7 +45,7 @@ void Dungeon::initPoisons() {
     poisons.push_back(new Poison("毒蛇毒液", 5, 3));
     poisons.push_back(new Poison("沼澤之毒", 10, 3));
     poisons.push_back(new Poison("惡魔的微笑", 20, 3));
-    poisons.push_back(new Poison("魔王之毒", 20, 3));
+    poisons.push_back(new Poison("魔王之毒", 15, 2));
     poisons.push_back(new Poison("蠍子之毒", 1, 10));
 }
 
@@ -128,7 +128,6 @@ void Dungeon::initRooms() {
     rooms[2]->addObject(npcs[1]);
     rooms[4]->addObject(foods[2]);
     rooms[4]->addObject(antidotes[1]);
-    rooms[5]->addObject(npcs[3]);
     /*
     Map:
       3-4-5

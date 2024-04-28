@@ -113,6 +113,9 @@ bool Room::encounterObjects(Player *player) {
                     if (static_cast<GameCharacter*>(this->objects[i])->checkIsDead()) {
                         this->objects.erase(this->objects.begin() + i);
                         --i;
+                        if (player->getCurrentRoom()->getIsExit() && player->getCurrentRoom()->canPass()) {
+                            return false;
+                        }
                         if (i == this->objects.size()-1) {
                             typewriter("你走到了房間的盡頭。\n");
                             wait();
