@@ -124,6 +124,12 @@ bool Room::encounterObjects(Player *player) {
                         }
                         continue;
                     }
+                    if (dynamic_cast<Npc*>(this->objects[i])) {
+                        cout << this->objects[i]->getName() << "離開了\n";
+                        wait();
+                        this->objects.erase(this->objects.begin() + i);
+                        --i;
+                    }
                 }
             }
             else if (option == '2') {

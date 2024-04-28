@@ -32,3 +32,13 @@ void red(string text) {
     }
     cout << ANSI_RESET;
 }
+
+void blue(string text) {
+    cout << ANSI_BLUE;
+    for (int i = 0; i < text.length(); i++) {
+        cout << text[i];
+        fflush(stdout);
+        usleep(TIME * 1000);
+    }
+    cout << ANSI_RESET;
+}

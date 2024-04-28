@@ -35,7 +35,7 @@ void Dungeon::init() {
 }
 
 void Dungeon::initPlayer() {
-    cout << ("請問你的名字是?\n");
+    typewriter("請問你的名字是?\n");
     string name;
     cin >> name;
     player = new Player(name, 200, 20, 5, 10, 10, 10, 10);
@@ -73,7 +73,7 @@ void Dungeon::initNpcs() {
     vector<string> npcLines;
     vector<string> npcNames;
     npcLines.push_back("小心毒蛇的攻擊。他們會在你身上留下猛毒!");
-    npcLines.push_back("我曾去到傳說中的10號房間。那裏有著不可抵抗的強大怪物。");
+    npcLines.push_back("我曾去到傳說中的5號房間。那裏有著不可抵抗的強大怪物。");
     npcLines.push_back("喝下牛奶可以解除毒藥的效果!");
     npcLines.push_back("蘋果除了可以補充飽食度、水分，還可以補充血量!");
     npcNames.push_back("Derek");

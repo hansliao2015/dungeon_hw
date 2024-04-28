@@ -74,6 +74,7 @@ void Npc::trade(GameCharacter* gameCharacter) {
         speak();
         trade(gameCharacter);
     } else {
-        cout << "你的錢不夠，" << getName() << "不想和你交易了。" << endl;
+        cout << "你的金錢不足!";
+        wait();
     }
 }
