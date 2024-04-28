@@ -48,6 +48,7 @@ void Npc::trade(GameCharacter* gameCharacter) {
         return;
     }
     Player *player = dynamic_cast<Player*>(gameCharacter);
+    cout << "目前金錢剩餘:" << player->getMoney() << "元" << endl;
     cout << "商品:" << endl;
     string itemsStr = "";
     for (int i = 0; i <= items.size(); i++) {
@@ -66,7 +67,7 @@ void Npc::trade(GameCharacter* gameCharacter) {
         trade(gameCharacter);
     } else if (index == items.size() + 1) {
         return;
-    } else if (player->getMoney() > items[index - 1]->getMoney()) {
+    } else if (player->getMoney() >= items[index - 1]->getMoney()) {
         player->setMoney(player->getMoney() - items[index - 1]->getMoney());
         player->addItem(items[index - 1]);
         cout << "交易成功，你花了" << items[index - 1]->getMoney() << "元" << endl;

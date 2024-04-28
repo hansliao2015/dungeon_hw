@@ -32,6 +32,7 @@ void Room::roomAction(Player *player) {
     drawRoomAndPlayerState(player);
     typewriter("這裡是房間" + to_string(this->getIndex()) + "\n");
     typewriter("在這裡你不會遇到任何東西，可以安心地調整狀態，休息過後再出發。\n");
+    player->updatePosionAndDebuffDamage();
     wait();
     showPlayerOptions(player);
 }
@@ -63,7 +64,7 @@ bool Room::encounterObjects(Player *player) {
             drawRoomAndPlayerState(player);
             cout << "目前房間物件數量: " << this->objects.size() << endl;
             typewriter("玩家移動中...\n");
-            player->updatePosionDamage();
+            player->updatePosionAndDebuffDamage();
             typewriter("前方出現了" + this->objects[i]->getTag() + "\n\n");
             cout << "你可以選擇:" << endl;
             cout << "1. 繼續向前" << endl;
@@ -89,9 +90,10 @@ bool Room::encounterObjects(Player *player) {
                         this->objects.erase(this->objects.begin() + i);
                         --i;
                         if (i == this->objects.size()-1) {
+                            drawRoomAndPlayerState(player);
                             typewriter("你走到了房間的盡頭。\n");
                             wait();
-                            showPlayerOptions(player);
+                            handlePlayerMovements(player);
                             return false;
                         }
                         continue;
@@ -129,6 +131,10 @@ bool Room::encounterObjects(Player *player) {
                         wait();
                         this->objects.erase(this->objects.begin() + i);
                         --i;
+                        if (i == this->objects.size()-1) {
+                            handlePlayerMovements(player);
+                            return true;
+                        }
                     }
                 }
             }

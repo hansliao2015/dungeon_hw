@@ -121,7 +121,7 @@ void Player::setPreviousRoom(Room *room) { previousRoom = room; }
 
 void Player::setInfectedPoison(Poison *poison) { infectedPoison = poison; }
 
-void Player::updatePosionDamage() {
+void Player::updatePosionAndDebuffDamage() {
     if (infectedPoison) {
         if (infectedPoison->getDuration() == 0) {
             infectedPoison = nullptr;
@@ -132,6 +132,18 @@ void Player::updatePosionDamage() {
         blue("受到毒的影響，你的體力下降，hp減少" + to_string(infectedPoison->getDamage()) + "\n");
         if (infectedPoison->getDuration() == 0) blue("你解除了中毒狀態\n");
         else blue("毒的持續效果還有" + to_string(infectedPoison->getDuration()) + "回合\n");
+    }
+    if (fullness == 0) {
+        currentHp -= 5;
+        blue("受到飢餓的影響，你的體力下降，hp減少5\n");
+    }
+    if (moisture == 0) {
+        currentHp -= 5;
+        blue("受到乾渴的影響，你的體力下降，hp減少5\n");
+    }
+    if (vitality == 0) {
+        currentHp -= 5;
+        blue("受到精神的影響，你的體力下降，hp減少5\n");
     }
     isRetreat = false;
 }
@@ -154,6 +166,7 @@ bool Player::launchBattle(GameCharacter *enemy) {
         enemy->takeDamage(atk);
         red("你對" + enemy->getName() + "造成了" + to_string(atk - enemy->getDef()) + "點傷害\n");
         red(enemy->getName() + "剩餘HP: " + to_string(enemy->getCurrentHp()) + "/" + to_string(enemy->getMaxHp()) + "\n");
+        updatePosionAndDebuffDamage();
 
         if (enemy->checkIsDead()) {
             typewriter("你贏了!\n");
@@ -178,7 +191,6 @@ bool Player::launchBattle(GameCharacter *enemy) {
             dynamic_cast<Monster*>(enemy)->getMonsterPoison()->infect(this);
             typewriter(enemy->getName() + "的攻擊附帶了" + dynamic_cast<Monster*>(enemy)->getMonsterPoison()->getName() + "，你受到了中毒的負面狀態!\n");
         }
-        updatePosionDamage();
         red(enemy->getName() + "對你造成了" + to_string(enemy->getAtk() - def) + "點傷害\n");
         red("你剩餘HP: " + to_string(currentHp) + "/" + to_string(maxHp) + "\n");
         if (currentHp <= 0) {

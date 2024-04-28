@@ -71,7 +71,7 @@ public:
     void setCurrentRoom(Room*);
     void setPreviousRoom(Room*);
     void setInfectedPoison(Poison*);
-    void updatePosionDamage();
+    void updatePosionAndDebuffDamage();
     bool launchBattle(GameCharacter* enemy);
     bool triggerEvent(GameCharacter* gameCharacter) override;
     void updateEnvironmentDamage(int fullnessDamage, int moistureDamage, int vitalityDamage);
